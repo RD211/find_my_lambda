@@ -1,0 +1,4 @@
+# Exclude Evaluator C++ build folder
+/Evaluator/build
+/.vscode
+/Evaluator/.cache
