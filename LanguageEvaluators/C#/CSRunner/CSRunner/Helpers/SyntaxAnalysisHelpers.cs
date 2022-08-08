@@ -41,4 +41,9 @@ public static class SyntaxAnalysisHelpers
     {
         return method.ParameterList.Parameters.ToList();
     }
+    
+    public static TypeSyntax GetFunctionReturn(MethodDeclarationSyntax method)
+    {
+        return method.ReturnType;
+    }
 }

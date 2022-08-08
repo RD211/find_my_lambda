@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e1d9b4fc-b0bd-49cb-896a-b287ac1f0553" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../CSRunner/.idea/.idea.CSRunner/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/.idea/.idea.CSRunner/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/CSRunner.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/CSRunner.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/bin/Debug/net6.0/CSRunner" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/bin/Debug/net6.0/CSRunner" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/bin/Debug/net6.0/CSRunner.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/bin/Debug/net6.0/CSRunner.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/bin/Debug/net6.0/CSRunner.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/bin/Debug/net6.0/CSRunner.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/CSRunner.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/CSRunner.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/CSRunner.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/CSRunner.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/CSRunner.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/CSRunner.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/CSRunner.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/CSRunner.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/CSRunner.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/CSRunner.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/CSRunner.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/CSRunner.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/CSRunner.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/CSRunner.genruntimeconfig.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/CSRunner.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/CSRunner.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/ref/CSRunner.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/ref/CSRunner.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/refint/CSRunner.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/Debug/net6.0/refint/CSRunner.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/../CSRunner/CSRunner/obj/rider.project.restore.info" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2D5FilDhiCvPVzAQ1lhdT9GUbp4" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e1d9b4fc-b0bd-49cb-896a-b287ac1f0553" name="Changes" comment="" />
+      <created>1659981167551</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1659981167551</updated>
+      <workItem from="1659981170730" duration="27000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>

@@ -2,3 +2,5 @@
 /Evaluator/build
 /.vscode
 /Evaluator/.cache
+/LanguageEvaluators/C#/CSRunner/CSRunner/bin
+/LanguageEvaluators/C#/CSRunnerTests/bin
