@@ -8,17 +8,13 @@ It will be completly sandboxed.
         string language
         string code
         [string] inputs
+        string path_to_evaluators
     -> String result (code: 0) or error (code: -1)
     
-    VERIFY CODE
+    VERIFY
         string language
         string code
-    -> OK(code: 0) or ERROR(code: -1)
-
-    VERIFY TESTS
-        string language
-        string code
-        string inputs
+        string path_to_evaluators
     -> OK(code: 0) or ERROR(code: -1)
 
 ## Structure
