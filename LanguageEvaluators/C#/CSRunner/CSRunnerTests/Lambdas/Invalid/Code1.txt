@@ -1,0 +1,7 @@
+public class Lambda
+{
+    public int Main(int x)
+    {
+        return x + 1;
+    }
+}

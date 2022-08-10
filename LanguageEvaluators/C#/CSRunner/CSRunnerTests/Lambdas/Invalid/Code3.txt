@@ -1,0 +1,9 @@
+public class Lambda
+{
+    public int lambda((int, int) x)
+    {
+        while(true) {
+            Console.WriteLine("malory");
+        }
+    }
+}

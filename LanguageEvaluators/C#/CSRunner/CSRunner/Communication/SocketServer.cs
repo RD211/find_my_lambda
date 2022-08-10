@@ -16,7 +16,7 @@ public class SocketServer
 {
     private readonly IPAddress _ipAddress;
     private readonly int _port;
-    private Action<string, Socket> _receiveLambda;
+    private readonly Action<string, Socket> _receiveLambda;
     private readonly ManualResetEvent _allDone = new(false);
 
     public SocketServer(IPAddress ipAddress, int port, Action<string, Socket> receiveLambda)
@@ -86,8 +86,7 @@ public class SocketServer
         if (content.IndexOf("<EOF>", StringComparison.Ordinal) > -1) {
             Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",  
                 content.Length, content );
-            _receiveLambda(content, handler);
-            Send(handler, content);
+            _receiveLambda(content.Replace("<EOF>",""), handler);
         } else {  
             handler.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0,  
                 ReadCallback, state);  

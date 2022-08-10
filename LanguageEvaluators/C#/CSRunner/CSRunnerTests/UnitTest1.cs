@@ -1,8 +1,5 @@
 using System.Runtime.Caching;
 using CSRunner;
-using CSRunner.Helpers;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using Newtonsoft.Json;
 
 namespace CSRunnerTests;
 
@@ -35,7 +32,7 @@ return new (int, (int,string))[]{
     public void TestInsertInputs1()
     {
 
-        var evaluator = new Evaluator(new MemoryCache("big cache"), new CacheItemPolicy());
+        var evaluator = new Evaluator(new MemoryCache("big cache"), new CacheItemPolicy(), new RandomDataFactory(new Random()));
 
         var result = evaluator.Evaluate(_code1, new List<string[]>()
         {
