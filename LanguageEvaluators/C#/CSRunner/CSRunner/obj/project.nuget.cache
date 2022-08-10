@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "+ZuFWZmlsjJM4RTx5tsYXrwgV+rpf1pABeLamT0ABeuWa7fAoCtstKJOJWRkEbyNZPBXt7IXXNmwbZlXz3RktA==",
+  "dgSpecHash": "PNASxrWutfF5KLaAu3JSSjdyymKqE/ZQLVkBQ/OK2ezTbHqtIyTO3y7GUTMeZTjiD8Epd9DdOrhC0cNc0qQIKg==",
   "success": true,
   "projectFilePath": "/run/media/rd211/SHARED/find_my_lambda/LanguageEvaluators/C#/CSRunner/CSRunner/CSRunner.csproj",
   "expectedPackageFiles": [
@@ -10,13 +10,21 @@
     "/home/rd211/.nuget/packages/microsoft.codeanalysis.csharp.scripting/4.3.0-3.final/microsoft.codeanalysis.csharp.scripting.4.3.0-3.final.nupkg.sha512",
     "/home/rd211/.nuget/packages/microsoft.codeanalysis.scripting.common/4.3.0-3.final/microsoft.codeanalysis.scripting.common.4.3.0-3.final.nupkg.sha512",
     "/home/rd211/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
+    "/home/rd211/.nuget/packages/microsoft.win32.systemevents/6.0.0/microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "/home/rd211/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512",
     "/home/rd211/.nuget/packages/system.collections.immutable/5.0.0/system.collections.immutable.5.0.0.nupkg.sha512",
+    "/home/rd211/.nuget/packages/system.configuration.configurationmanager/6.0.0/system.configuration.configurationmanager.6.0.0.nupkg.sha512",
+    "/home/rd211/.nuget/packages/system.drawing.common/6.0.0/system.drawing.common.6.0.0.nupkg.sha512",
     "/home/rd211/.nuget/packages/system.memory/4.5.4/system.memory.4.5.4.nupkg.sha512",
     "/home/rd211/.nuget/packages/system.reflection.metadata/5.0.0/system.reflection.metadata.5.0.0.nupkg.sha512",
+    "/home/rd211/.nuget/packages/system.runtime.caching/6.0.0/system.runtime.caching.6.0.0.nupkg.sha512",
     "/home/rd211/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "/home/rd211/.nuget/packages/system.security.accesscontrol/6.0.0/system.security.accesscontrol.6.0.0.nupkg.sha512",
+    "/home/rd211/.nuget/packages/system.security.cryptography.protecteddata/6.0.0/system.security.cryptography.protecteddata.6.0.0.nupkg.sha512",
+    "/home/rd211/.nuget/packages/system.security.permissions/6.0.0/system.security.permissions.6.0.0.nupkg.sha512",
     "/home/rd211/.nuget/packages/system.text.encoding.codepages/6.0.0/system.text.encoding.codepages.6.0.0.nupkg.sha512",
-    "/home/rd211/.nuget/packages/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg.sha512"
+    "/home/rd211/.nuget/packages/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg.sha512",
+    "/home/rd211/.nuget/packages/system.windows.extensions/6.0.0/system.windows.extensions.6.0.0.nupkg.sha512"
   ],
   "logs": []
 }

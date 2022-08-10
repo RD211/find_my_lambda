@@ -14,12 +14,11 @@ public class StateObject
 
 public class SocketServer
 {
-    private IPAddress _ipAddress;
-    private int _port;
+    private readonly IPAddress _ipAddress;
+    private readonly int _port;
     private Action<string, Socket> _receiveLambda;
     private readonly ManualResetEvent _allDone = new(false);
 
-    
     public SocketServer(IPAddress ipAddress, int port, Action<string, Socket> receiveLambda)
     {
         _ipAddress = ipAddress;
@@ -70,7 +69,7 @@ public class SocketServer
             ReadCallback, state);  
     }
 
-    private static void ReadCallback(IAsyncResult ar)
+    private void ReadCallback(IAsyncResult ar)
     {
         
         var state = (StateObject) ar.AsyncState!;  
@@ -87,7 +86,7 @@ public class SocketServer
         if (content.IndexOf("<EOF>", StringComparison.Ordinal) > -1) {
             Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",  
                 content.Length, content );
-            
+            _receiveLambda(content, handler);
             Send(handler, content);
         } else {  
             handler.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0,  

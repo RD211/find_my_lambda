@@ -1,5 +1,8 @@
+using System.Runtime.Caching;
 using CSRunner;
+using CSRunner.Helpers;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
+using Newtonsoft.Json;
 
 namespace CSRunnerTests;
 
@@ -11,8 +14,8 @@ public class Tests
     {
         _code1 = @"using System;
 public class Lambda {
-    public static (int, (int,string)) lambda(int a) {
-        return (a, (30,""40""));
+    public (string,int,int) lambda(string[] a, int b) {
+        return (a[1],b,b);
     }
     }";
         _code1_w_tests = @"using System;
@@ -32,14 +35,22 @@ return new (int, (int,string))[]{
     public void TestInsertInputs1()
     {
 
-        var input = new List<string>() { "5", "6" };
-        Console.WriteLine(Evaluator.InsertInputsInCode(_code1, input));
+        var evaluator = new Evaluator(new MemoryCache("big cache"), new CacheItemPolicy());
+
+        var result = evaluator.Evaluate(_code1, new List<string[]>()
+        {
+            new string[] { @"[""wow"",""damn""]", "6" },
+        });
+        foreach (var o in result)
+        {
+            Console.WriteLine(o);
+        }
+
     }
     
     [Test]
     public async Task TestEvaluate1()
     {
         var input = new List<string>() { "5", "6" };
-        Console.WriteLine((await Evaluator.EvaluateCode(_code1_w_tests)).Value.GetType());
     }
 }

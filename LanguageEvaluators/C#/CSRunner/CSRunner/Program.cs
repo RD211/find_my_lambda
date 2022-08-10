@@ -9,10 +9,7 @@ namespace CSRunner;
 public static class CsRunner
 {
     private static SocketServer? _socketServer;
-
     
-    
-
     private static async void ReadInput(string jsonInput, Socket socket)
     {
         var payload = JsonConvert.DeserializeObject<EvaluatePayload>(jsonInput);
@@ -22,16 +19,16 @@ public static class CsRunner
             return;
         }
         
-        switch (payload.action)
+        switch (payload.Action)
         {
             case "EVALUATE":
-                var resultEvaluate = 
-                    await Evaluator.EvaluateCode(Evaluator.InsertInputsInCode(payload.code, payload.inputs.ToList()));
+                //var resultEvaluate = 
+                    //await Evaluator.(payload.Code, payload.Inputs);
                 
-                SocketServer.Send(socket,
-                    resultEvaluate.HasValue
-                        ? $"SUCCESS: {resultEvaluate.Value}"
-                        : $"CODE_ERROR: Something went wrong while evaluating the program.");
+                //SocketServer.Send(socket,
+                //    resultEvaluate.HasValue
+                //        ? $"SUCCESS: {resultEvaluate.Value}"
+                //        : $"CODE_ERROR: Something went wrong while evaluating the program.");
                 break;
             case "VERIFY":
                 //var resultVerify = await EvaluateCode(payload.code, );
