@@ -65,14 +65,12 @@ public class Evaluator
             if (classType == null) throw new ArgumentException("Code has wrong structure.");
 
             var instanceOfClass = Activator.CreateInstance(classType);
-
             for (var i = 0; i < times; i++)
             {
                 var inputs = _dataFactory.GetRandomValuesOfTypes(parameterTypes);
-                
                 classType.InvokeMember("lambda", 
                     BindingFlags.Default | BindingFlags.InvokeMethod, 
-                    null, 
+                    Type.DefaultBinder, 
                     instanceOfClass,
                     inputs);
             }

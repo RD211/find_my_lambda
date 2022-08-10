@@ -20,4 +20,31 @@
       <ProjectReference Include="..\CSRunner\CSRunner.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Lambdas\Invalid\Code1.txt" />
+      <EmbeddedResource Include="Lambdas\Invalid\Code1.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="Lambdas\Invalid\Code2.txt" />
+      <EmbeddedResource Include="Lambdas\Invalid\Code2.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="Lambdas\Invalid\Code3.txt" />
+      <EmbeddedResource Include="Lambdas\Invalid\Code3.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="Lambdas\Valid\Code1.txt" />
+      <EmbeddedResource Include="Lambdas\Valid\Code1.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="Lambdas\Valid\Code2.txt" />
+      <EmbeddedResource Include="Lambdas\Valid\Code2.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="Lambdas\Valid\Code3.txt" />
+      <EmbeddedResource Include="Lambdas\Valid\Code3.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+
 </Project>

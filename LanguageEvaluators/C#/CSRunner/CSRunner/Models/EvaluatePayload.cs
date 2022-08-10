@@ -6,12 +6,16 @@ public enum Action
     Verify,
     Ping
 }
+
+/**
+ * The payload that can be received.
+ */
 public class EvaluatePayload
 {
-    public Action? Action;
-    public string? Language;
-    public string[][]? Inputs;
-    public string? Code;
+    public readonly Action? Action;
+    public readonly string? Language;
+    public readonly string[][]? Inputs;
+    public readonly string? Code;
 
     public EvaluatePayload(Action? action, string? language, string[][]? inputs, string? code)
     {

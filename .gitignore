@@ -3,5 +3,6 @@
 /.vscode
 /Evaluator/.cache
 /LanguageEvaluators/C#/CSRunner/CSRunner/bin
-/LanguageEvaluators/C#/CSRunnerTests/bin
-/LanguageEvaluators/C#/CSRunnerTests/obj
+/LanguageEvaluators/C#/CSRunner/CSRunner/obj
+/LanguageEvaluators/C#/CSRunner/CSRunnerTests/bin
+/LanguageEvaluators/C#/CSRunner/CSRunnerTests/obj

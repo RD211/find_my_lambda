@@ -7,6 +7,9 @@ namespace CSRunner.Helpers;
 public static class SyntaxAnalysisHelpers
 {
 
+    /**
+     * Gets all classes declared in the code.
+     */
     public static IEnumerable<ClassDeclarationSyntax> GetClassDeclarations(Compilation compilation, SyntaxTree tree)
     {
         var semanticModel = compilation.GetSemanticModel(tree);
@@ -15,6 +18,9 @@ public static class SyntaxAnalysisHelpers
         return root.DescendantNodes().OfType<ClassDeclarationSyntax>();
     }
     
+    /**
+     * Gets a class declaration with the name provided.
+     */
     public static ClassDeclarationSyntax GetClassDeclarationByName(Compilation compilation, SyntaxTree tree, string name)
     {
         var semanticModel = compilation.GetSemanticModel(tree);
@@ -24,21 +30,33 @@ public static class SyntaxAnalysisHelpers
             .OfType<ClassDeclarationSyntax>().First(syntax => syntax.Identifier.Text == name);
     }
 
+    /**
+     * Gets all the methods of the provided class.
+     */
     public static IEnumerable<MethodDeclarationSyntax> GetMethodsOfClass(ClassDeclarationSyntax classSyntax)
     {
         return classSyntax.Members.OfType<MethodDeclarationSyntax>();
     }
     
-    public static MethodDeclarationSyntax GetMethodOfClassByName(TypeDeclarationSyntax classSyntax, string methodName)
+    /**
+     * Gets the method with the provided name inside the class declaration.
+     */
+    public static MethodDeclarationSyntax GetMethodOfClassByName(ClassDeclarationSyntax classSyntax, string methodName)
     {
         return classSyntax.Members.OfType<MethodDeclarationSyntax>().First(syntax => syntax.Identifier.Text == methodName);
     }
 
+    /**
+     * Gets the return type of the method as SyntaxNode.
+     */
     public static TypeSyntax GetFunctionReturn(MethodDeclarationSyntax method)
     {
         return method.ReturnType;
     }
     
+    /**
+     * Gets all the function parameters of a function as SyntaxNodes.
+     */
     public static IEnumerable<TypeSyntax?> GetFunctionParameters(MethodDeclarationSyntax method)
     {
         if (method.ParameterList is null)
@@ -47,6 +65,9 @@ public static class SyntaxAnalysisHelpers
         return method.ParameterList.Parameters.Select(syntax => syntax.Type);
     }
 
+    /**
+     * Converts a SyntaxNodeType to an actual Reflection Type.
+     */
     public static Type GetTypeFromNode(Compilation compilation, SyntaxTree tree, CSharpSyntaxNode node)
     {
         var semanticModel = compilation.GetSemanticModel(tree);
@@ -57,6 +78,11 @@ public static class SyntaxAnalysisHelpers
         return GetTypeFromNode(typeSymbol);
     }
     
+    /**
+     * Given an TypeSymbol it will try and convert it to a normal reflection type.
+     * This method supports only booleans, chars, ints, doubles, strings, arrays, tuples.
+     * The tuples and arrays are created in a recursive manner.
+     */
     public static Type GetTypeFromNode(ITypeSymbol typeSymbol)
     {
         var namedSymbol = typeSymbol as INamedTypeSymbol;
@@ -99,6 +125,10 @@ public static class SyntaxAnalysisHelpers
 
     #region Horrible code
 
+    /**
+     * Gets a tuple type based on the generic arguments.
+     * It needs to be done for each individual tuple type since it's actually a different class.
+     */
     private static Type GetTupleType(IReadOnlyList<Type> types)
     {
         switch (types.Count)
@@ -123,52 +153,52 @@ public static class SyntaxAnalysisHelpers
                 return typeof(Tuple);
         }
     }
-
+    
     private static Type GetTupleType1(Type t1)
     {
-        var tupleType = typeof (Tuple<>);
+        var tupleType = typeof (ValueTuple<>);
         return tupleType.MakeGenericType(t1); 
     }
     
     private static Type GetTupleType2(Type t1, Type t2)
     {
-        var tupleType = typeof (Tuple<,>);
+        var tupleType = typeof (ValueTuple<,>);
         return tupleType.MakeGenericType(t1, t2); 
     }
     
     private static Type GetTupleType3(Type t1,Type t2,Type t3)
     {
-        var tupleType = typeof (Tuple<,,>);
+        var tupleType = typeof (ValueTuple<,,>);
         return tupleType.MakeGenericType(t1,t2,t3); 
     }
     
     private static Type GetTupleType4(Type t1,Type t2,Type t3,Type t4)
     {
-        var tupleType = typeof (Tuple<,,,>);
+        var tupleType = typeof (ValueTuple<,,,>);
         return tupleType.MakeGenericType(t1,t2,t3,t4); 
     }
     
     private static Type GetTupleType5(Type t1,Type t2,Type t3,Type t4,Type t5)
     {
-        var tupleType = typeof (Tuple<,,,,>);
+        var tupleType = typeof (ValueTuple<,,,,>);
         return tupleType.MakeGenericType(t1,t2,t3,t4,t5); 
     }
     
     private static Type GetTupleType6(Type t1,Type t2,Type t3,Type t4,Type t5, Type t6)
     {
-        var tupleType = typeof (Tuple<,,,,,>);
+        var tupleType = typeof (ValueTuple<,,,,,>);
         return tupleType.MakeGenericType(t1,t2,t3,t4,t5,t6); 
     }
     
     private static Type GetTupleType7(Type t1,Type t2,Type t3,Type t4,Type t5, Type t6, Type t7)
     {
-        var tupleType = typeof (Tuple<,,,,,,>);
+        var tupleType = typeof (ValueTuple<,,,,,,>);
         return tupleType.MakeGenericType(t1,t2,t3,t4,t5,t6,t7); 
     }
     
     private static Type GetTupleType8(Type t1,Type t2,Type t3,Type t4,Type t5, Type t6, Type t7, Type t8)
     {
-        var tupleType = typeof (Tuple<,,,,,,,>);
+        var tupleType = typeof (ValueTuple<,,,,,,,>);
         return tupleType.MakeGenericType(t1,t2,t3,t4,t5,t6,t7,t8); 
     }
 

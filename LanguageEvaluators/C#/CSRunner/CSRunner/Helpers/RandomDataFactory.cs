@@ -1,78 +1,101 @@
 namespace CSRunner;
 
+/**
+ * This class provides random based on the type.
+ * It recursively generates data for tuples and arrays.
+ */
 public class RandomDataFactory
 {
+    /**
+     * The dictionary that maps the types to the functions.
+     */
     private readonly Dictionary<Type, Func<Type, object>> _factory;
     
+    /**
+     * Constructor that takes a random instance to use in the
+     * construction of the Dictionary.
+     */
     public RandomDataFactory(Random random)
     {
-        var random1 = random;
         _factory = new Dictionary<Type, Func<Type, object>>
         {
-            { typeof(int), _ => random1.Next(-1000, 1000) },
-            { typeof(double), _ => (random1.NextDouble() - 0.5) * 2000 },
-            { typeof(string), _ => random1.Next(1000).ToString() },
-            { typeof(char), _ => (char)random1.Next(10,128) },
-            { typeof(Array), (t) => Array.CreateInstance(t, 
-                (int)(_factory?[typeof(int)](typeof(int)) ?? throw new ArgumentException("Wrong type provided."))) },
-            { typeof(Tuple<>), (t) =>
+            { typeof(int), _ => random.Next(-1000, 1000) },
+            { typeof(double), _ => (random.NextDouble() - 0.5) * 2000 },
+            { typeof(string), _ => random.Next(1000).ToString() },
+            { typeof(char), _ => (char)random.Next(10,128) }, 
+            { typeof(ValueTuple<>), GenerateValueTuple},
+            { typeof(ValueTuple<,>), GenerateValueTuple},
+            { typeof(ValueTuple<,,>), GenerateValueTuple},
+            { typeof(ValueTuple<,,,>), GenerateValueTuple},
+            { typeof(ValueTuple<,,,,>), GenerateValueTuple},
+            { typeof(ValueTuple<,,,,,>), GenerateValueTuple},
+            { typeof(ValueTuple<,,,,,,>), GenerateValueTuple},
+            { typeof(ValueTuple<,,,,,,,>), GenerateValueTuple},
+            // This takes an array and tries to create an array of length 10 of the specified type.
+            { typeof(Array), (t) =>
             {
-                var types = t.GenericTypeArguments.Select(type => _factory?[type](type))
-                    .ToList();
-                return Tuple.Create(types[0]);
+                var innerType = t.GetElementType();
+                return typeof(RandomDataFactory)
+                    .GetMethods()
+                    .Where(info => info.Name == "GenerateArrayType")
+                    .FirstOrDefault(info => info.IsGenericMethod)!
+                    .MakeGenericMethod(innerType ?? throw new ArgumentException("Wrong type provided."))
+                    .Invoke(this, new object[]{})!;
             }},
-            { typeof(Tuple<,>), (t) =>
-            {
-                var types = t.GenericTypeArguments.Select(type => _factory?[type](type))
-                    .ToList();
-                return Tuple.Create(types[0],types[1]);
-            }},
-            { typeof(Tuple<,,>), (t) =>
-            {
-                var types = t.GenericTypeArguments.Select(type => _factory?[type](type))
-                    .ToList();
-                return Tuple.Create(types[0],types[1],types[2]);
-            }},
-            { typeof(Tuple<,,,>), (t) =>
-            {
-                var types = t.GenericTypeArguments.Select(type => _factory?[type](type))
-                    .ToList();
-                return Tuple.Create(types[0],types[1],types[2],types[3]);
-            }},
-            { typeof(Tuple<,,,,>), (t) =>
-            {
-                var types = t.GenericTypeArguments.Select(type => _factory?[type](type))
-                    .ToList();
-                return Tuple.Create(types[0],types[1],types[2],types[3],types[4]);
-            }},
-            { typeof(Tuple<,,,,,>), (t) =>
-            {
-                var types = t.GenericTypeArguments.Select(type => _factory?[type](type))
-                    .ToList();
-                return Tuple.Create(types[0],types[1],types[2],types[3],types[4],types[5]);
-            }},
-            { typeof(Tuple<,,,,,,>), (t) =>
-            {
-                var types = t.GenericTypeArguments.Select(type => _factory?[type](type))
-                    .ToList();
-                return Tuple.Create(types[0],types[1],types[2],types[3],types[4],types[5],types[6]);
-            }},
-            { typeof(Tuple<,,,,,,,>), (t) =>
-            {
-                var types = t.GenericTypeArguments.Select(type => _factory?[type](type))
-                    .ToList();
-                return Tuple.Create(types[0],types[1],types[2],types[3],types[4],types[5],types[6],types[7]);
-            }}
         };
     }
 
+    /**
+     * Returns a random object of the type provided.
+     */
     public object GetRandomValueOfType(Type t)
     {
-        return _factory[t](t);
+        if (_factory.ContainsKey(t))
+        {
+            return _factory[t](t);
+        }
+
+        if (t.IsGenericType)
+        {
+            var gt = t.GetGenericTypeDefinition();
+            return _factory[gt](t);
+        }
+
+        if (t.IsArray)
+        {
+            return _factory[typeof(Array)](t);
+        }
+
+        throw new ArgumentException("Type is not part of allowed set.");
     }
     
+    /**
+     * Returns objects of types provided.
+     */
     public object[] GetRandomValuesOfTypes(IEnumerable<Type> t)
     {
         return t.Select(GetRandomValueOfType).ToArray();
+    }
+
+    private object CreateTupleWithRuntimeType(Type[] genericTypes, object[] values)
+    {
+        return typeof(ValueTuple)
+            .GetMethods()
+            .Where(info => info.Name == "Create")
+            .FirstOrDefault(info => info.IsGenericMethod && info.GetGenericArguments().Length == genericTypes.Length)!
+            .MakeGenericMethod(genericTypes)
+            .Invoke(this, values)!;
+    }
+
+    private object GenerateValueTuple(Type t)
+    {
+        var objs = t.GenericTypeArguments.Select(GetRandomValueOfType)
+            .ToArray();
+        return CreateTupleWithRuntimeType(t.GenericTypeArguments, objs);
+    }
+
+    public T[] GenerateArrayType<T>()
+    {
+        return Enumerable.Range(0, 10).Select(_ => GetRandomValueOfType(typeof(T))).Cast<T>().ToArray();
     }
 }
