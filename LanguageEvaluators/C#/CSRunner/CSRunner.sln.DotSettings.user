@@ -8,6 +8,8 @@
     &lt;TestId&gt;NUnit3x::0AB2BCC3-7E43-4019-A4A3-266BD5E337B3::net6.0::CSRunnerTests.EvaluateTests.TestCode1&lt;/TestId&gt;
     &lt;TestId&gt;NUnit3x::0AB2BCC3-7E43-4019-A4A3-266BD5E337B3::net6.0::CSRunnerTests.EvaluateTests.TestCode2&lt;/TestId&gt;
     &lt;TestId&gt;NUnit3x::0AB2BCC3-7E43-4019-A4A3-266BD5E337B3::net6.0::CSRunnerTests.EvaluateTests.TestCode3&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::0AB2BCC3-7E43-4019-A4A3-266BD5E337B3::net6.0::CSRunnerTests.ExportTests.TestParser&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::0AB2BCC3-7E43-4019-A4A3-266BD5E337B3::net6.0::CSRunnerTests.ExportTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=eb899289_002D2401_002D426a_002D8753_002D36d195aee097/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;

@@ -4,6 +4,7 @@ using System.Runtime.Caching;
 using CSRunner.Communication;
 using CSRunner.Helpers;
 using CSRunner.Models;
+using CSRunner.Parser;
 using Newtonsoft.Json;
 using Action = CSRunner.Models.Action;
 
@@ -52,25 +53,21 @@ public static class CsRunner
                     }
 
                     var resultEvaluate = Evaluator.Evaluate(payload.Code, payload.Inputs);
-                    response = new ResponsePayload(Result.OK, resultEvaluate);
+                    response = new ResponsePayload(Result.OK, resultEvaluate.Select(InputParser.Export).ToArray());
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                     response = new ResponsePayload(Result.FAILURE, "Code failed to evaluate.");
                 }
-                catch
-                {
-                    response = new ResponsePayload(Result.FAILURE, "Code failed to evaluate.");
-                }
-
+                
                 break;
             case Action.Verify:
                 try
                 {
                     var resultEvaluate = Evaluator.Verify(payload.Code);
                     response = resultEvaluate ? 
-                        new ResponsePayload(Result.OK, true) : 
+                        new ResponsePayload(Result.OK, "true") : 
                         new ResponsePayload(Result.FAILURE, "Something went wrong while verifying the program.");
                 }
                 catch (Exception e)
@@ -80,14 +77,15 @@ public static class CsRunner
                 }
                 break;
             case Action.Ping:
-                response = new ResponsePayload(Result.OK, "Pong");
-                break;
+                SocketServer.Send(socket, $"Pong<EOF>");
+                return;
             default:
                 response = new ResponsePayload(Result.FAILURE, "Action not recognized.");
                 break;
         }
 
         string resultingPayload;
+        
         try
         {
             resultingPayload = JsonConvert.SerializeObject(response);
@@ -96,7 +94,7 @@ public static class CsRunner
         {
             Console.WriteLine(e.Message);
             var serializedResponse = JsonConvert.SerializeObject(new ResponsePayload(Result.FAILURE,
-                "Something went wrong while verifying the program."));
+                "Something went wrong."));
             SocketServer.Send(socket, $"{serializedResponse}<EOF>");
             return;
         }

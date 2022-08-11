@@ -1,3 +1,4 @@
+using System.Globalization;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using CSRunner.Helpers;
@@ -16,6 +17,59 @@ public static class InputParser
         IParseTree tree = parser.input();
 
         return Walk(tree, resultingType, parser);
+    }
+
+    public static string Export(object? obj)
+    {
+        var t = obj.GetType();
+        var dynamicObj = (dynamic)obj;
+        
+        if (t.IsGenericType)
+        {
+            var gt = t.GetGenericTypeDefinition();
+            if (gt == typeof(ValueTuple<>))
+                return $"({Export(dynamicObj.Item1)})";
+            if (gt == typeof(ValueTuple<,>))
+                return $"({Export(dynamicObj.Item1)},{Export(dynamicObj.Item2)})";
+            if (gt == typeof(ValueTuple<,,>))
+                return $"({Export(dynamicObj.Item1)},{Export(dynamicObj.Item2)},{Export(dynamicObj.Item3)})";
+            if (gt == typeof(ValueTuple<,,,>))
+                return $"({Export(dynamicObj.Item1)},{Export(dynamicObj.Item2)},{Export(dynamicObj.Item3)},{Export(dynamicObj.Item4)})";
+            if (gt == typeof(ValueTuple<,,,,>))
+                return $"({Export(dynamicObj.Item1)},{Export(dynamicObj.Item2)},{Export(dynamicObj.Item3)},{Export(dynamicObj.Item4)},{Export(dynamicObj.Item5)})";
+            if (gt == typeof(ValueTuple<,,,,,>))
+                return $"({Export(dynamicObj.Item1)},{Export(dynamicObj.Item2)},{Export(dynamicObj.Item3)},{Export(dynamicObj.Item4)},{Export(dynamicObj.Item5)},{Export(dynamicObj.Item6)})";
+            if (gt == typeof(ValueTuple<,,,,,,>))
+                return $"({Export(dynamicObj.Item1)},{Export(dynamicObj.Item2)},{Export(dynamicObj.Item3)},{Export(dynamicObj.Item4)},{Export(dynamicObj.Item5)},{Export(dynamicObj.Item6)},{Export(dynamicObj.Item7)})";
+            if (gt == typeof(ValueTuple<,,,,,,,>))
+                return $"({Export(dynamicObj.Item1)},{Export(dynamicObj.Item2)},{Export(dynamicObj.Item3)},{Export(dynamicObj.Item4)},{Export(dynamicObj.Item5)},{Export(dynamicObj.Item6)},{Export(dynamicObj.Item7)},{Export(dynamicObj.Item8)})";
+        }
+        else if (t.IsArray)
+        {
+            var acc = "";
+            for (var i = 0; i < dynamicObj.Length; i++)
+            {
+                acc += Export(dynamicObj[i]);
+                if (i != dynamicObj.Length - 1)
+                {
+                    acc += ',';
+                }
+            }
+
+            return $"[{acc}]";
+        }
+        else
+        {
+            return obj switch
+            {
+                int i => i.ToString(),
+                string s => $"\"{s}\"",
+                double d => d.ToString(CultureInfo.InvariantCulture),
+                _ => throw new ArgumentException("Couldn't recognize type.")
+            };
+        }
+
+        throw new ArgumentException("Couldn't recognize type.");
     }
 
     private static object Walk(IParseTree tree, Type desiredType, LambdaParser parser)
