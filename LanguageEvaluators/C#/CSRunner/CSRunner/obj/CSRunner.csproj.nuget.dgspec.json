@@ -38,6 +38,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Antlr4.Runtime.Standard": {
+              "target": "Package",
+              "version": "[4.10.1, )"
+            },
             "Microsoft.CodeAnalysis.CSharp": {
               "target": "Package",
               "version": "[4.3.0-3.final, )"

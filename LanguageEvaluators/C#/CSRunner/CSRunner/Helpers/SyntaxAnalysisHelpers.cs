@@ -10,9 +10,8 @@ public static class SyntaxAnalysisHelpers
     /**
      * Gets all classes declared in the code.
      */
-    public static IEnumerable<ClassDeclarationSyntax> GetClassDeclarations(Compilation compilation, SyntaxTree tree)
+    public static IEnumerable<ClassDeclarationSyntax> GetClassDeclarations(SyntaxTree tree)
     {
-        var semanticModel = compilation.GetSemanticModel(tree);
         var root = tree.GetRoot();
 
         return root.DescendantNodes().OfType<ClassDeclarationSyntax>();
@@ -21,9 +20,8 @@ public static class SyntaxAnalysisHelpers
     /**
      * Gets a class declaration with the name provided.
      */
-    public static ClassDeclarationSyntax GetClassDeclarationByName(Compilation compilation, SyntaxTree tree, string name)
+    public static ClassDeclarationSyntax GetClassDeclarationByName(SyntaxTree tree, string name)
     {
-        var semanticModel = compilation.GetSemanticModel(tree);
         var root = tree.GetRoot();
 
         return root.DescendantNodes()
@@ -131,27 +129,18 @@ public static class SyntaxAnalysisHelpers
      */
     private static Type GetTupleType(IReadOnlyList<Type> types)
     {
-        switch (types.Count)
+        return types.Count switch
         {
-            case 1:
-                return GetTupleType1(types[0]);
-            case 2:
-                return GetTupleType2(types[0],types[1]);
-            case 3:
-                return GetTupleType3(types[0],types[1], types[2]);
-            case 4:
-                return GetTupleType4(types[0],types[1], types[2], types[3]);
-            case 5:
-                return GetTupleType5(types[0],types[1], types[2], types[3], types[4]);
-            case 6:
-                return GetTupleType6(types[0],types[1], types[2], types[3], types[4], types[5]);
-            case 7:
-                return GetTupleType7(types[0],types[1], types[2], types[3], types[4], types[5], types[6]);
-            case 8:
-                return GetTupleType8(types[0],types[1], types[2], types[3], types[4], types[5], types[6], types[7]);
-            default:
-                return typeof(Tuple);
-        }
+            1 => GetTupleType1(types[0]),
+            2 => GetTupleType2(types[0], types[1]),
+            3 => GetTupleType3(types[0], types[1], types[2]),
+            4 => GetTupleType4(types[0], types[1], types[2], types[3]),
+            5 => GetTupleType5(types[0], types[1], types[2], types[3], types[4]),
+            6 => GetTupleType6(types[0], types[1], types[2], types[3], types[4], types[5]),
+            7 => GetTupleType7(types[0], types[1], types[2], types[3], types[4], types[5], types[6]),
+            8 => GetTupleType8(types[0], types[1], types[2], types[3], types[4], types[5], types[6], types[7]),
+            _ => throw new ArgumentException("Wrong number of elements provided to GetTupleType.")
+        };
     }
     
     private static Type GetTupleType1(Type t1)
@@ -201,6 +190,6 @@ public static class SyntaxAnalysisHelpers
         var tupleType = typeof (ValueTuple<,,,,,,,>);
         return tupleType.MakeGenericType(t1,t2,t3,t4,t5,t6,t7,t8); 
     }
-
+    
     #endregion
 }

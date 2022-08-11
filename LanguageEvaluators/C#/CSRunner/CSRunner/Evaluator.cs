@@ -3,9 +3,9 @@ using System.Reflection;
 using CSRunner.Helpers;
 using Microsoft.CodeAnalysis;
 using System.Runtime.Caching;
+using CSRunner.Parser;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Scripting;
-using Newtonsoft.Json;
 
 namespace CSRunner;
 
@@ -34,15 +34,7 @@ public class Evaluator
 
         var deserializedInputs = 
             inputs.Select(strings => strings.Zip(parameterTypes))
-            .Select(tuples => tuples.Select(tuple =>
-            {
-                return typeof(JsonConvert)
-                    .GetMethods()!
-                    .Where(info => info.Name == "DeserializeObject")
-                    .FirstOrDefault(info => info.IsGenericMethod)!
-                    .MakeGenericMethod(tuple.Second)
-                    .Invoke(this, new object[] { tuple.First });
-            }));
+            .Select(tuples => tuples.Select(tuple => InputParser.Parse(tuple.First, tuple.Second)));
 
         var results = deserializedInputs.Select(o => 
             classType.InvokeMember("lambda",
@@ -86,11 +78,11 @@ public class Evaluator
 
     private static IEnumerable<Type> GetParameterTypesOfLambdaFunction(Compilation compilation, SyntaxTree tree)
     {
-        var classDeclaration = SyntaxAnalysisHelpers.GetClassDeclarationByName(compilation, tree, "Lambda");
+        var classDeclaration = SyntaxAnalysisHelpers.GetClassDeclarationByName(tree, "Lambda");
         var method = SyntaxAnalysisHelpers.GetMethodOfClassByName(classDeclaration, "lambda");
         var parameters = SyntaxAnalysisHelpers.GetFunctionParameters(method);
         var types = 
-            parameters.Select(syntax => SyntaxAnalysisHelpers.GetTypeFromNode(compilation, tree, syntax)).ToList();
+            parameters.Select(syntax => SyntaxAnalysisHelpers.GetTypeFromNode(compilation, tree, syntax!)).ToList();
 
         return types;
     }

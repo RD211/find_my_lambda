@@ -1,4 +1,4 @@
-namespace CSRunner;
+namespace CSRunner.Helpers;
 
 /**
  * This class provides random based on the type.
@@ -22,7 +22,6 @@ public class RandomDataFactory
             { typeof(int), _ => random.Next(-1000, 1000) },
             { typeof(double), _ => (random.NextDouble() - 0.5) * 2000 },
             { typeof(string), _ => random.Next(1000).ToString() },
-            { typeof(char), _ => (char)random.Next(10,128) }, 
             { typeof(ValueTuple<>), GenerateValueTuple},
             { typeof(ValueTuple<,>), GenerateValueTuple},
             { typeof(ValueTuple<,,>), GenerateValueTuple},
@@ -35,12 +34,14 @@ public class RandomDataFactory
             { typeof(Array), (t) =>
             {
                 var innerType = t.GetElementType();
-                return typeof(RandomDataFactory)
-                    .GetMethods()
-                    .Where(info => info.Name == "GenerateArrayType")
-                    .FirstOrDefault(info => info.IsGenericMethod)!
-                    .MakeGenericMethod(innerType ?? throw new ArgumentException("Wrong type provided."))
-                    .Invoke(this, new object[]{})!;
+                if (innerType is null)
+                {
+                    throw new ArgumentException("Invalid type provided.");
+                }
+                
+                return ReflectionHelpers.CreateArrayWithRuntimeType(
+                    innerType,
+                    Enumerable.Range(0, 10).Select(_ => GetRandomValueOfType(innerType)).ToArray());
             }},
         };
     }
@@ -48,7 +49,7 @@ public class RandomDataFactory
     /**
      * Returns a random object of the type provided.
      */
-    public object GetRandomValueOfType(Type t)
+    private object GetRandomValueOfType(Type t)
     {
         if (_factory.ContainsKey(t))
         {
@@ -77,25 +78,10 @@ public class RandomDataFactory
         return t.Select(GetRandomValueOfType).ToArray();
     }
 
-    private object CreateTupleWithRuntimeType(Type[] genericTypes, object[] values)
-    {
-        return typeof(ValueTuple)
-            .GetMethods()
-            .Where(info => info.Name == "Create")
-            .FirstOrDefault(info => info.IsGenericMethod && info.GetGenericArguments().Length == genericTypes.Length)!
-            .MakeGenericMethod(genericTypes)
-            .Invoke(this, values)!;
-    }
-
     private object GenerateValueTuple(Type t)
     {
         var objs = t.GenericTypeArguments.Select(GetRandomValueOfType)
             .ToArray();
-        return CreateTupleWithRuntimeType(t.GenericTypeArguments, objs);
-    }
-
-    public T[] GenerateArrayType<T>()
-    {
-        return Enumerable.Range(0, 10).Select(_ => GetRandomValueOfType(typeof(T))).Cast<T>().ToArray();
+        return ReflectionHelpers.CreateTupleWithRuntimeType(t.GenericTypeArguments, objs);
     }
 }

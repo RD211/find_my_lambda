@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace CSRunner;
+namespace CSRunner.Communication;
 
 public class StateObject
 {
@@ -73,8 +73,13 @@ public class SocketServer
     {
         
         var state = (StateObject) ar.AsyncState!;  
-        var handler = state.WorkSocket;  
-  
+        var handler = state.WorkSocket;
+
+        if (handler is null)
+        {
+            throw new Exception("Work socket is null.");
+        }
+        
         var bytesRead = handler.EndReceive(ar);
 
         if (bytesRead <= 0) return;
@@ -105,17 +110,18 @@ public class SocketServer
     {
         try
         {
-            var handler = (Socket) ar.AsyncState;  
-  
-            if (handler != null)
+            var handler = (Socket?) ar.AsyncState;
+            if (handler is null)
             {
-                var bytesSent = handler.EndSend(ar);  
-                Console.WriteLine("Sent {0} bytes to client.", bytesSent);
+                throw new Exception("Handler somehow became null.");
             }
+            
+            var bytesSent = handler.EndSend(ar);  
+            Console.WriteLine("Sent {0} bytes to client.", bytesSent);
+
 
             handler.Shutdown(SocketShutdown.Both);  
-            handler.Close();  
-  
+            handler.Close();
         }
         catch (Exception e)
         {

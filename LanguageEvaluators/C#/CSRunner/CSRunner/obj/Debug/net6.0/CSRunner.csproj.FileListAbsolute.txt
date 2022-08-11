@@ -228,3 +228,4 @@ S:/test2code/CSRunner/CSRunner/bin/Debug/net6.0/zh-Hant/Microsoft.CodeAnalysis.S
 /run/media/rd211/SHARED/find_my_lambda/LanguageEvaluators/C#/CSRunner/CSRunner/bin/Debug/net6.0/runtimes/win/lib/net6.0/System.Runtime.Caching.dll
 /run/media/rd211/SHARED/find_my_lambda/LanguageEvaluators/C#/CSRunner/CSRunner/bin/Debug/net6.0/runtimes/win/lib/net6.0/System.Security.Cryptography.ProtectedData.dll
 /run/media/rd211/SHARED/find_my_lambda/LanguageEvaluators/C#/CSRunner/CSRunner/bin/Debug/net6.0/runtimes/win/lib/net6.0/System.Windows.Extensions.dll
+/run/media/rd211/SHARED/find_my_lambda/LanguageEvaluators/C#/CSRunner/CSRunner/bin/Debug/net6.0/Antlr4.Runtime.Standard.dll

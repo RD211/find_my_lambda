@@ -177,3 +177,4 @@
 /run/media/rd211/SHARED/find_my_lambda/LanguageEvaluators/C#/CSRunner/CSRunnerTests/bin/Debug/net6.0/Lambdas/Invalid/Code1.txt
 /run/media/rd211/SHARED/find_my_lambda/LanguageEvaluators/C#/CSRunner/CSRunnerTests/bin/Debug/net6.0/Lambdas/Invalid/Code2.txt
 /run/media/rd211/SHARED/find_my_lambda/LanguageEvaluators/C#/CSRunner/CSRunnerTests/bin/Debug/net6.0/Lambdas/Invalid/Code3.txt
+/run/media/rd211/SHARED/find_my_lambda/LanguageEvaluators/C#/CSRunner/CSRunnerTests/bin/Debug/net6.0/Antlr4.Runtime.Standard.dll

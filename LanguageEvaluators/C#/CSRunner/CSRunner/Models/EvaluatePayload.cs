@@ -1,4 +1,4 @@
-namespace CSRunner;
+namespace CSRunner.Models;
 
 public enum Action
 {

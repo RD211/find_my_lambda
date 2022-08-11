@@ -1,5 +1,6 @@
 using System.Runtime.Caching;
 using CSRunner;
+using CSRunner.Helpers;
 
 namespace CSRunnerTests;
 
@@ -7,6 +8,7 @@ public class VerifyTests
 {
     private List<string> _validPrograms = new (), _invalidPrograms = new ();
     private Evaluator _evaluator;
+    
     [SetUp]
     public void Setup()
     {
