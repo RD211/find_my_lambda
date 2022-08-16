@@ -11,3 +11,12 @@
 /LanguageEvaluators/C#/CSRunner/CSRunnerTests/obj
 /Server/obj
 /Server/bin
+/FrontEnd/lambda_finder/.idea
+/FrontEnd/lambda_finder/.dart_tool
+/FrontEnd/lambda_finder/build
+/FrontEnd/lambda_finder/ios
+/FrontEnd/lambda_finder/linux
+/FrontEnd/lambda_finder/macos
+/FrontEnd/lambda_finder/windows
+/FrontEnd/lambda_finder/web
+/FrontEnd/lambda_finder/android
