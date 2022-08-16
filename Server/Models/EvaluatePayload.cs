@@ -1,4 +1,4 @@
-namespace CSRunner.Models;
+namespace Server.Models;
 
 public enum Action
 {
@@ -9,14 +9,14 @@ public enum Action
 }
 
 /**
- * The payload that can be received.
+ * The payload that will be sent.
  */
 public class EvaluatePayload
 {
-    public readonly Action? Action;
-    public readonly string? Language;
-    public readonly string[]? Inputs;
-    public readonly string? Code;
+    public Action? Action;
+    public string? Language;
+    public string[]? Inputs;
+    public string? Code;
 
     public EvaluatePayload(Action? action, string? language, string[]? inputs, string? code)
     {

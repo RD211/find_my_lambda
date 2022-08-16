@@ -29,14 +29,21 @@ public static class CsRunner
         catch (Exception e)
         {
             var responseJson = JsonConvert.SerializeObject(new ResponsePayload(Result.FAILURE, e.Message));
-            SocketServer.Send(socket, $"{responseJson}<EOF>");
+            SocketServer.Send(socket, responseJson);
             return;
         }
         
         if (payload?.Code is null || payload.Action is null)
         {
             var responseJson = JsonConvert.SerializeObject(new ResponsePayload(Result.FAILURE, "JSON is invalid."));
-            SocketServer.Send(socket, $"{responseJson}<EOF>");
+            SocketServer.Send(socket,  responseJson);
+            return;
+        }
+        
+        if (payload.Language != "C#")
+        {
+            var responseJson = JsonConvert.SerializeObject(new ResponsePayload(Result.FAILURE, "Wrong language server."));
+            SocketServer.Send(socket,  responseJson);
             return;
         }
 
@@ -77,8 +84,21 @@ public static class CsRunner
                 }
                 break;
             case Action.Ping:
-                SocketServer.Send(socket, $"Pong<EOF>");
+                SocketServer.Send(socket, $"Pong");
                 return;
+            case Action.Types:
+                try
+                {
+                    var resultTypes = Evaluator.GetTypes(payload.Code);
+                    response = new ResponsePayload(Result.OK, new[]{resultTypes.Item1, resultTypes.Item2});
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    response = new ResponsePayload(Result.FAILURE, "Something went wrong while checking the types of the program.");
+                }
+
+                break;
             default:
                 response = new ResponsePayload(Result.FAILURE, "Action not recognized.");
                 break;
@@ -95,11 +115,11 @@ public static class CsRunner
             Console.WriteLine(e.Message);
             var serializedResponse = JsonConvert.SerializeObject(new ResponsePayload(Result.FAILURE,
                 "Something went wrong."));
-            SocketServer.Send(socket, $"{serializedResponse}<EOF>");
+            SocketServer.Send(socket, serializedResponse);
             return;
         }
         
-        SocketServer.Send(socket, $"{resultingPayload}<EOF>");
+        SocketServer.Send(socket, resultingPayload);
         
     }
     

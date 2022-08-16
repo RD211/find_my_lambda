@@ -1,7 +1,7 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:Int64 x:Key="/Default/Environment/Hierarchy/Build/BuildTool/MsbuildVersion/@EntryValue">1114112</s:Int64>
 	<s:String x:Key="/Default/Environment/Hierarchy/Build/BuildTool/CustomBuildToolPath/@EntryValue">/var/run/host/usr/share/dotnet/sdk/6.0.106/MSBuild.dll</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bc9aaef5_002De672_002D455e_002D960d_002D5086072de257/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bc9aaef5_002De672_002D455e_002D960d_002D5086072de257/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;NUnit3x::0AB2BCC3-7E43-4019-A4A3-266BD5E337B3::net6.0::CSRunnerTests.VerifyTests&lt;/TestId&gt;
     &lt;TestId&gt;NUnit3x::0AB2BCC3-7E43-4019-A4A3-266BD5E337B3::net6.0::CSRunnerTests.ParserTests.TestParser&lt;/TestId&gt;
@@ -12,8 +12,11 @@
     &lt;TestId&gt;NUnit3x::0AB2BCC3-7E43-4019-A4A3-266BD5E337B3::net6.0::CSRunnerTests.ExportTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=eb899289_002D2401_002D426a_002D8753_002D36d195aee097/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=eb899289_002D2401_002D426a_002D8753_002D36d195aee097/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;NUnit3x::0AB2BCC3-7E43-4019-A4A3-266BD5E337B3::net6.0::CSRunnerTests.ParserTests.TestParser&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::0AB2BCC3-7E43-4019-A4A3-266BD5E337B3::net6.0::CSRunnerTests.ExportTests.TestExport2&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::0AB2BCC3-7E43-4019-A4A3-266BD5E337B3::net6.0::CSRunnerTests.VerifyTests&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::0AB2BCC3-7E43-4019-A4A3-266BD5E337B3::net6.0::CSRunnerTests.EvaluateTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

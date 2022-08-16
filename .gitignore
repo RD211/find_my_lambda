@@ -1,6 +1,7 @@
 # Exclude Evaluator C++ build folder
 /Deprecated/build
 /Deprecated
+/Deprecated2
 /.vscode
 /Deprecated/.cache
 /LanguageEvaluators/C#/CSRunner/CSRunner/bin

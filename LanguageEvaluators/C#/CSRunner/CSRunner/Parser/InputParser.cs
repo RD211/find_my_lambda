@@ -71,6 +71,37 @@ public static class InputParser
 
         throw new ArgumentException("Couldn't recognize type.");
     }
+    
+    public static string Export(Type? t)
+    {
+        
+        if (t.IsGenericType)
+        {
+            return $"({string.Join(',', t.GenericTypeArguments.Select(Export))})";
+        }
+        
+        if (t.IsArray)
+        {
+            return $"[{Export(t.GetElementType())}]";
+        }
+
+        if (t == typeof(int))
+        {
+            return "int";
+        }
+
+        if (t == typeof(string))
+        {
+            return "string";
+        }
+
+        if (t == typeof(double))
+        {
+            return "double";
+        }
+
+        throw new ArgumentException("Couldn't recognize type.");
+    }
 
     private static object Walk(IParseTree tree, Type desiredType, LambdaParser parser)
     {

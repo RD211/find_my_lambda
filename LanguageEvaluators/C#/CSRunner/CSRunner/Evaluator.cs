@@ -3,6 +3,7 @@ using System.Reflection;
 using CSRunner.Helpers;
 using Microsoft.CodeAnalysis;
 using System.Runtime.Caching;
+using System.Runtime.CompilerServices;
 using CSRunner.Parser;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Scripting;
@@ -22,28 +23,47 @@ public class Evaluator
         _dataFactory = dataFactory;
     }
 
-    public IEnumerable<object?> Evaluate(string code, IEnumerable<string[]> inputs)
+    public IEnumerable<string> Evaluate(string code, IEnumerable<string> inputs)
     {
         var (assembly, compilation, tree) = AssembleCode(code);
-        var parameterTypes = GetParameterTypesOfLambdaFunction(compilation, tree);
+        var parameterType = 
+            ReflectionHelpers.GetTupleType(GetParameterTypesOfLambdaFunction(compilation, tree).ToList()); 
         
         var classType = assembly.GetType("Lambda");
         if (classType == null) throw new ArgumentException("Code has wrong structure.");
         
         var instanceOfClass = Activator.CreateInstance(classType);
 
-        var deserializedInputs = 
-            inputs.Select(strings => strings.Zip(parameterTypes))
-            .Select(tuples => tuples.Select(tuple => InputParser.Parse(tuple.First, tuple.Second)));
+        var deserializedInputs = inputs.Select(s => InputParser.Parse(s, parameterType))
+            .Select(o => ReflectionHelpers.GetElementsOfTuple(o as ITuple));
 
         var results = deserializedInputs.Select(o => 
             classType.InvokeMember("lambda",
             BindingFlags.Default | BindingFlags.InvokeMethod,
             null,
             instanceOfClass,
-            o.ToArray()));
+            o.ToArray())).Select(InputParser.Export).Select(s => $"({s})");
         
         return results;
+    }
+
+    public (string, string) GetTypes(string code)
+    {
+        try
+        {
+            var (_, compilation, tree) = AssembleCode(code);
+
+            var returnType = $"({InputParser.Export(GetReturnTypeOfLambdaFunction(compilation, tree))})";
+            var parameterTypes =
+                $"({string.Join(',', GetParameterTypesOfLambdaFunction(compilation, tree).Select(InputParser.Export))})";
+
+            return (returnType, parameterTypes);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            throw;
+        }
     }
 
     public bool Verify(string code, int times = 100)
@@ -52,7 +72,11 @@ public class Evaluator
         {
             var (assembly, compilation, tree) = AssembleCode(code);
             var parameterTypes = GetParameterTypesOfLambdaFunction(compilation, tree).ToList();
-
+            if (parameterTypes.Count > 8)
+            {
+                Console.WriteLine("Too many arguments provided in function lambda.");
+                return false;
+            }
             var classType = assembly.GetType("Lambda");
             if (classType == null) throw new ArgumentException("Code has wrong structure.");
 
@@ -85,6 +109,16 @@ public class Evaluator
             parameters.Select(syntax => SyntaxAnalysisHelpers.GetTypeFromNode(compilation, tree, syntax!)).ToList();
 
         return types;
+    }
+    
+    private static Type GetReturnTypeOfLambdaFunction(Compilation compilation, SyntaxTree tree)
+    {
+        var classDeclaration = SyntaxAnalysisHelpers.GetClassDeclarationByName(tree, "Lambda");
+        var method = SyntaxAnalysisHelpers.GetMethodOfClassByName(classDeclaration, "lambda");
+        var returnTypeSyntax = SyntaxAnalysisHelpers.GetFunctionReturn(method);
+        var type = SyntaxAnalysisHelpers.GetTypeFromNode(compilation, tree, returnTypeSyntax);
+
+        return type;
     }
 
     private (Assembly, Compilation, SyntaxTree) AssembleCode(string code)

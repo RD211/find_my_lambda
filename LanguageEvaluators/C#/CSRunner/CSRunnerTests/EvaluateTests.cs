@@ -22,18 +22,18 @@ public class EvaluateTests
     public void TestCode1()
     {
         Assert.That(
-            _evaluator.Evaluate(_code1, new List<string[]>
+            _evaluator.Evaluate(_code1, new List<string>
             {
-                new [] { "1" },
-                new [] { "2" },
-                new [] { "3" },
-                new [] { "4" },
-                new [] { "5" },
-                new [] { "6" },
+                "(1)",
+                "(2)",
+                "(3)",
+                "(4)",
+                "(5)",
+                "(6)",
             }),
-            Is.EqualTo(new List<object?>
+            Is.EqualTo(new List<string>
             {
-                2, 3, 4, 5, 6, 7
+                "(2)","(3)","(4)","(5)","(6)","(7)"
             }));
     }
     
@@ -41,18 +41,18 @@ public class EvaluateTests
     public void TestCode2()
     {
         Assert.That(
-            _evaluator.Evaluate(_code2, new List<string[]>
+            _evaluator.Evaluate(_code2, new List<string>
             {
-                new [] { "(1,2)" },
-                new [] { "(2,1)" },
-                new [] { "(100,0)" },
-                new [] { "(1000,-1)" },
-                new [] { "(-1,1000)" },
-                new [] { "(0,0)" },
+                 "((1,2))" ,
+                "((2,1))",
+                "((100,0))",
+                "((1000,-1))",
+                "((-1,1000))",
+                "((0,0))",
             }),
-            Is.EqualTo(new List<object?>
+            Is.EqualTo(new List<string>
             {
-                1,2,100,1000,-1,0
+                "(1)","(2)","(100)","(1000)","(-1)","(0)"
             }));
     }
     
@@ -60,14 +60,14 @@ public class EvaluateTests
     public void TestCode3()
     {
         Assert.That(
-            _evaluator.Evaluate(_code3, new List<string[]>
+            _evaluator.Evaluate(_code3, new List<string>
             {
-                new [] { "[(5,[1])]" },
-                new [] { "[(5,[])]" },
+                "([(5,[1])])",
+                "([(5,[])])",
             }),
-            Is.EqualTo(new List<object?>
+            Is.EqualTo(new List<string>
             {
-                (5,5),(5,5)
+                "((5,5))","((5,5))"
             }));
     }
 }
