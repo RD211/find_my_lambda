@@ -13,4 +13,23 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="SQL\Queries\GetById.sql" />
+    <EmbeddedResource Include="SQL\Queries\GetById.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="SQL\Queries\CacheResult.sql" />
+    <EmbeddedResource Include="SQL\Queries\CacheResult.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="SQL\Queries\GetByInputType.sql" />
+    <EmbeddedResource Include="SQL\Queries\GetByInputType.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="SQL\Queries\GetResultByInput.sql" />
+    <EmbeddedResource Include="SQL\Queries\GetResultByInput.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

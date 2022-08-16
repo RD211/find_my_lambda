@@ -1,0 +1,1 @@
+SELECT * FROM dbo.lambdas WHERE id = @id;

@@ -4,7 +4,7 @@ namespace Server.Models;
 
 public class Lambda
 {
-    public Lambda(int id, string? programmingLanguage, string? code, string? inputType, string? returnType, DateTime uploadDate, int timesUsed)
+    public Lambda(int id, string? programmingLanguage, string code, string inputType, string returnType, DateTime uploadDate, int timesUsed)
     {
         Id = id;
         ProgrammingLanguage = programmingLanguage;
@@ -30,9 +30,9 @@ public class Lambda
 
     public int Id { get; set; }
     public string? ProgrammingLanguage { get; set; }
-    public string? Code { get; set; }
-    public string? InputType { get; set; }
-    public string? ReturnType { get; set; }
+    public string Code { get; set; }
+    public string InputType { get; set; }
+    public string ReturnType { get; set; }
     public DateTime UploadDate { get; set; }
     public int TimesUsed { get; set; }
     

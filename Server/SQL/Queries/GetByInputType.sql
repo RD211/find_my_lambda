@@ -1,0 +1,1 @@
+SELECT * FROM dbo.lambdas WHERE input_type = @input_type ORDER BY times_used;

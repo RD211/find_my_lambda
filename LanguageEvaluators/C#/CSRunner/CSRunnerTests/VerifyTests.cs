@@ -13,7 +13,7 @@ public class VerifyTests
     public void Setup()
     {
         _validPrograms = Directory.EnumerateFiles("./Lambdas/Valid").Select(File.ReadAllText).ToList();
-        _invalidPrograms = Directory.EnumerateFiles("Lambdas/Invalid").Select(File.ReadAllText).ToList();
+        _invalidPrograms = Directory.EnumerateFiles("./Lambdas/Invalid").Select(File.ReadAllText).ToList();
         _evaluator = new Evaluator(new MemoryCache("big cache"), new CacheItemPolicy(), new RandomDataFactory(new Random()));
     }
     

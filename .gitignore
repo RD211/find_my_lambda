@@ -9,4 +9,5 @@
 /LanguageEvaluators/C#/CSRunner/.idea
 /LanguageEvaluators/C#/CSRunner/CSRunnerTests/bin
 /LanguageEvaluators/C#/CSRunner/CSRunnerTests/obj
-/Server/node_modules
+/Server/obj
+/Server/bin

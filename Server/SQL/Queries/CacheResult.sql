@@ -1,0 +1,1 @@
+INSERT INTO cached_results(lambda_id, input, result) VALUES(@id, @input, @result);

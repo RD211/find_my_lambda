@@ -1,12 +1,10 @@
 using System.Data.SqlClient;
-using System.Globalization;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Server.Communication;
 using Server.Models;
+using Server.Searcher;
+using Server.SQL;
 using Action = Server.Models.Action;
 
 namespace Server.Controllers;
@@ -18,20 +16,15 @@ public class LambdaController
 
     private readonly IConfiguration _config;
     private readonly ILogger<LambdaController> _logger;
-    private readonly string _connectionString;
+    private readonly LambdaDatabase _lambdaDatabase;
+    private readonly LambdaFinder _lambdaFinder;
+
     public LambdaController(ILogger<LambdaController> logger, IConfiguration config)
     {
         _logger = logger;
         _config = config;
-        var builder = new SqlConnectionStringBuilder
-        {
-            DataSource = config["Database:DataSource"],
-            UserID = config["Database:UserId"],
-            Password = config["Database:Password"],
-            InitialCatalog = config["Database:Catalog"]
-        };
-
-        _connectionString = builder.ConnectionString;
+        _lambdaDatabase = new LambdaDatabase(_config);
+        _lambdaFinder = new LambdaFinder(_lambdaDatabase);
     }
     
     
@@ -42,26 +35,13 @@ public class LambdaController
     {
         try
         {
-            using var connection = new SqlConnection(_connectionString);
-            
-            connection.Open();
-
-            var sql = $"SELECT * FROM dbo.lambdas WHERE id = @id;";
-
-            using var command = new SqlCommand(sql, connection);
-            command.Prepare();
-            command.Parameters.AddWithValue("@id", id);
-            
-            using var reader = command.ExecuteReader();
-            if (!reader.HasRows)
+            var lambda = _lambdaDatabase.GetLambdaById(id);
+            if (lambda is null)
             {
-                _logger.Log(LogLevel.Information, 
-                    "Couldn't find lambda function with id: " + id);
-                return new NotFoundResult(); 
+                return new NotFoundResult();
             }
-            
-            reader.Read();
-            return new OkObjectResult(Lambda.ReadLambda(reader));
+
+            return new OkObjectResult(lambda);
         }
         catch (SqlException e)
         {
@@ -83,7 +63,7 @@ public class LambdaController
                 null,
                 lambdaPayload.Code);
             
-            var resultVerify = SendToLanguageServer(payload);
+            var resultVerify = LanguageServer.Send(payload);
 
             if (resultVerify.Result == Result.FAILURE || 
                 (resultVerify.Result == Result.OK && resultVerify.Payload!.ToString() == "false"))
@@ -92,7 +72,7 @@ public class LambdaController
             }
 
             payload.Action = Action.Types;
-            var resultTypes = SendToLanguageServer(payload);
+            var resultTypes = LanguageServer.Send(payload);
             
             
             if (resultTypes.Result == Result.FAILURE)
@@ -103,26 +83,19 @@ public class LambdaController
             var types = resultTypes.Payload as JArray;
             
             
-            using var connection = new SqlConnection(_connectionString);
-            
-            connection.Open();
+            var result = _lambdaDatabase.InsertLambda(
+                lambdaPayload.ProgrammingLanguage ?? throw new InvalidOperationException(), 
+                lambdaPayload.Code, 
+                types?[0].Value<string>() ?? throw new ArgumentException("Function has unsupported parameter types."),
+                types[1].Value<string>() ?? throw new ArgumentException("Function has unsupported return type.")
+            );
 
-            const string sql = 
-                "INSERT INTO dbo.lambdas(programming_language,code,input_type,return_type,upload_date,times_used) " +
-                "VALUES(@language, @code, @input, @return, @date, 0);";
+            if (result)
+            {
+                return new OkResult();
+            }
 
-            using var command = new SqlCommand(sql, connection);
-            command.Prepare();
-            command.Parameters.AddWithValue("@language", payload.Language);
-            command.Parameters.AddWithValue("@code", payload.Code);
-            command.Parameters.AddWithValue("@input", types?[0]);
-            command.Parameters.AddWithValue("@return", types?[1]);
-            command.Parameters.AddWithValue("@date", DateTime.Now);
-
-
-            using var reader = command.ExecuteReader();
-            reader.Read();
-            return new OkResult();
+            return new NotFoundResult();
         }
         catch (SqlException e)
         {
@@ -138,33 +111,10 @@ public class LambdaController
     {
         try
         {
-            using var connection = new SqlConnection(_connectionString);
-            
-            connection.Open();
+            // TODO: dynamically figure out the input type.
+            var lamdbas = _lambdaDatabase.GetLambdasByInputType("(int)");
 
-            var sql = $"SELECT * FROM dbo.lambdas WHERE input_type = @input_type ORDER BY times_used;";
-            using var command = new SqlCommand(sql, connection);
-            
-            command.Prepare();
-            command.Parameters.AddWithValue("@input_type", "(int)");
-            
-            using var reader = command.ExecuteReader();
-
-            var found = new List<Lambda>();
-            while (reader.Read())
-            {
-                found.Add(new Lambda(
-                    reader.GetInt32(0),
-                    reader.GetString(1),
-                    reader.GetString(2),
-                    reader.GetString(3),
-                    reader.GetString(4),
-                    reader.GetDateTime(5),
-                    reader.GetInt32(6)
-                ));
-            }
-
-            return new OkObjectResult(found.Where(lambda => CheckMethod(lambda, searchPayload)));
+            return new OkObjectResult(lamdbas.Where(lambda => _lambdaFinder.CheckMethod(lambda, searchPayload)));
         }
         catch (SqlException e)
         {
@@ -173,89 +123,7 @@ public class LambdaController
         }
     }
 
-    private bool CheckMethod(Lambda lambda, SearchPayload searchPayload)
-    {
-        var results = searchPayload.Inputs.Select(s => GetResultOfInput(lambda, s)).ToArray();
-        return results.SequenceEqual(searchPayload.Results);
-    }
 
-    private void CacheResult(Lambda lambda, string input, string output)
-    {
-        using var connection = new SqlConnection(_connectionString);
-            
-        connection.Open();
 
-        var sql = $"INSERT INTO cached_results(lambda_id, input, result) VALUES(@id, @input, @result)";
-        using var command = new SqlCommand(sql, connection);
-        
-        command.Prepare();
-        command.Parameters.AddWithValue("@id", lambda.Id);
-        command.Parameters.AddWithValue("@input", input);
-        command.Parameters.AddWithValue("@result", output);
-
-        using var reader = command.ExecuteReader();
-    }
-
-    private string? GetResultOfInput(Lambda lambda, string input)
-    {
-        using var connection = new SqlConnection(_connectionString);
-            
-        connection.Open();
-
-        var sql = $"SELECT * FROM dbo.cached_results WHERE lambda_id = @id AND input = @input;";
-        using var command = new SqlCommand(sql, connection);
-        
-        command.Prepare();
-        command.Parameters.AddWithValue("@id", lambda.Id);
-        command.Parameters.AddWithValue("@input", input);
-
-        using var reader = command.ExecuteReader();
-
-        if (reader.Read())
-        {
-            return reader.GetString(2);
-        }
-
-        var result = SendToLanguageServer(new EvaluatePayload(
-            Action.Evaluate, lambda.ProgrammingLanguage, new[] { input }, lambda.Code));
-        
-        if (result.Result == Result.FAILURE)
-            return null;
-        
-        var output = (result.Payload as JArray)?[0].Value<string>();
-        output = output?.Substring(1, output.Length - 2);
-        CacheResult(lambda, input, output!);
-        
-        return output;
-    }
-
-    private static ResponsePayload SendToLanguageServer(EvaluatePayload evaluatePayload)
-    {
-        var bytes = new byte[2048];
-        var ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-        var ipAddress = ipHostInfo.AddressList[0];
-        var remoteEp = new IPEndPoint(new IPAddress(new byte[]{127,0,0,1}), 11000);
-
-        var sender = new Socket(ipAddress.AddressFamily,
-            SocketType.Stream, ProtocolType.Tcp);
-
-        sender.Connect(remoteEp);
-
-        var msg = Encoding.ASCII.GetBytes($"{JsonConvert.SerializeObject(evaluatePayload)}<EOF>");
-
-        sender.Send(msg);
-
-        var bytesRec = sender.Receive(bytes);
-        var response =
-            JsonConvert.DeserializeObject<ResponsePayload>(Encoding.ASCII.GetString(bytes, 0, bytesRec));
-
-        if (response is null)
-        {
-            throw new Exception("Something went wrong while serializing the response.");
-        }
-
-        sender.Shutdown(SocketShutdown.Both);
-        sender.Close();
-        return response;
-    }
+    
 }

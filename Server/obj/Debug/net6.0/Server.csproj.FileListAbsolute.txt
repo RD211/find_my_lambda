@@ -32,3 +32,7 @@
 /run/media/rd211/SHARED/find_my_lambda/Server/bin/Debug/net6.0/runtimes/win-x86/native/sni.dll
 /run/media/rd211/SHARED/find_my_lambda/Server/bin/Debug/net6.0/runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll
 /run/media/rd211/SHARED/find_my_lambda/Server/bin/Debug/net6.0/runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll
+/run/media/rd211/SHARED/find_my_lambda/Server/bin/Debug/net6.0/SQL/Queries/GetById.sql
+/run/media/rd211/SHARED/find_my_lambda/Server/bin/Debug/net6.0/SQL/Queries/CacheResult.sql
+/run/media/rd211/SHARED/find_my_lambda/Server/bin/Debug/net6.0/SQL/Queries/GetByInputType.sql
+/run/media/rd211/SHARED/find_my_lambda/Server/bin/Debug/net6.0/SQL/Queries/GetResultByInput.sql
