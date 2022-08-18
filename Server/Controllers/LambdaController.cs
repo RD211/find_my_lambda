@@ -84,6 +84,9 @@ public class LambdaController
             
             
             var result = _lambdaDatabase.InsertLambda(
+                lambdaPayload.Name,
+                lambdaPayload.Description,
+                lambdaPayload.Email,
                 lambdaPayload.ProgrammingLanguage ?? throw new InvalidOperationException(), 
                 lambdaPayload.Code, 
                 types?[0].Value<string>() ?? throw new ArgumentException("Function has unsupported parameter types."),

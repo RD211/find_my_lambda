@@ -1,0 +1,2 @@
+INSERT INTO dbo.lambdas(name, description, email, programming_language,code,input_type,return_type,upload_date,times_used,confirmed, verified, likes) 
+VALUES(@name, @description, @email, @language, @code, @input, @return, @date, 0, false, false, 0);

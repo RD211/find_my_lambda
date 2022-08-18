@@ -10,7 +10,8 @@ public class LambdaDatabase
         GetById,
         GetByInputType,
         CacheResult,
-        GetResultByInput
+        GetResultByInput,
+        InsertLambda
     }
     
     private readonly string _connectionString;
@@ -49,7 +50,7 @@ public class LambdaDatabase
         return Lambda.ReadLambda(reader);
     }
 
-    public bool InsertLambda(string language, string code, string input, string output)
+    public bool InsertLambda(string name, string description, string email, string language, string code, string input, string output)
     {
         try
         {
@@ -57,30 +58,31 @@ public class LambdaDatabase
 
             connection.Open();
 
-            const string sql =
-                "INSERT INTO dbo.lambdas(programming_language,code,input_type,return_type,upload_date,times_used) " +
-                "VALUES(@language, @code, @input, @return, @date, 0);";
+            var sql = GetSqlQuery(SqlOperation.InsertLambda);
 
             using var command = new SqlCommand(sql, connection);
             command.Prepare();
+            command.Parameters.AddWithValue("@name", name);
+            command.Parameters.AddWithValue("@description", description);
+            command.Parameters.AddWithValue("@email", email);
             command.Parameters.AddWithValue("@language", language);
             command.Parameters.AddWithValue("@code", code);
             command.Parameters.AddWithValue("@input", input);
             command.Parameters.AddWithValue("@return", output);
             command.Parameters.AddWithValue("@date", DateTime.Now);
 
-
             using var reader = command.ExecuteReader();
             reader.Read();
         }
         catch (Exception e)
         {
+            Console.WriteLine(e.Message);
             return false;
         }
         return true;
     }
 
-    public List<Lambda> GetLambdasByInputType(string inputType)
+    public IEnumerable<Lambda> GetLambdasByInputType(string inputType)
     {
         using var connection = new SqlConnection(_connectionString);
             
