@@ -6,7 +6,7 @@ import './text_button_theme.dart';
 
 final themeData = ThemeData(
   colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
-      .copyWith(secondary: Colors.purple),
+      .copyWith(secondary: const Color(0xff23241f)),
   textButtonTheme: textButtonTheme,
   elevatedButtonTheme: elevatedButtonTheme,
   outlinedButtonTheme: outlinedButtonTheme,

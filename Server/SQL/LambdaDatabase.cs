@@ -50,7 +50,7 @@ public class LambdaDatabase
         return Lambda.ReadLambda(reader);
     }
 
-    public bool InsertLambda(string name, string description, string email, string language, string code, string input, string output)
+    public void InsertLambda(string name, string description, string email, string language, string code, string input, string output)
     {
         try
         {
@@ -77,9 +77,8 @@ public class LambdaDatabase
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            return false;
+            throw;
         }
-        return true;
     }
 
     public IEnumerable<Lambda> GetLambdasByInputType(string inputType)

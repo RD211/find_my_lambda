@@ -51,10 +51,11 @@ public class LambdaController
     }
     
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Lambda))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult UploadLambda([FromBody] LambdaPayload lambdaPayload)
     {
+        Console.WriteLine("Uploading a lambda...");
         try
         {
             var payload = new EvaluatePayload(
@@ -83,7 +84,7 @@ public class LambdaController
             var types = resultTypes.Payload as JArray;
             
             
-            var result = _lambdaDatabase.InsertLambda(
+            _lambdaDatabase.InsertLambda(
                 lambdaPayload.Name,
                 lambdaPayload.Description,
                 lambdaPayload.Email,
@@ -93,12 +94,8 @@ public class LambdaController
                 types[1].Value<string>() ?? throw new ArgumentException("Function has unsupported return type.")
             );
 
-            if (result)
-            {
-                return new OkResult();
-            }
-
-            return new NotFoundResult();
+            Console.WriteLine("Added new lambda to database!");
+            return new OkObjectResult(_lambdaDatabase.GetLambdaById(1));
         }
         catch (SqlException e)
         {
