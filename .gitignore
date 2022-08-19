@@ -9,8 +9,10 @@
 /LanguageEvaluators/C#/CSRunner/.idea
 /LanguageEvaluators/C#/CSRunner/CSRunnerTests/bin
 /LanguageEvaluators/C#/CSRunner/CSRunnerTests/obj
-/Server/obj
-/Server/bin
+/Server/Server/obj
+/Server/Server/bin
+/Server/ServerTests/bin
+/Server/ServerTests/obj
 /FrontEnd/lambda_finder/.idea
 /FrontEnd/lambda_finder/.dart_tool
 /FrontEnd/lambda_finder/build

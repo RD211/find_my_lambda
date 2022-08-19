@@ -57,7 +57,7 @@ public class Evaluator
             var parameterTypes =
                 $"({string.Join(',', GetParameterTypesOfLambdaFunction(compilation, tree).Select(InputParser.Export))})";
 
-            return (returnType, parameterTypes);
+            return (parameterTypes, returnType);
         }
         catch (Exception e)
         {
