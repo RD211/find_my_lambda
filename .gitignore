@@ -1,4 +1,3 @@
-# Exclude Evaluator C++ build folder
 /Deprecated/build
 /Deprecated
 /Deprecated2
