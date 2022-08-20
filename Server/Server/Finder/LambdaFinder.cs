@@ -37,8 +37,8 @@ public class LambdaFinder
 
     public List<Lambda> Find(SearchPayload searchPayload)
     {
-        var pq = new PriorityQueue<(List<Lambda>, SearchPayload), (int, int)>();
-        pq.Enqueue((new List<Lambda>(), searchPayload), (0,0));
+        var pq = new PriorityQueue<(List<int>, SearchPayload), (int, int)>();
+        pq.Enqueue((new List<int>(), searchPayload), (0,0));
 
         var times = 0;
         while (pq.Count > 0 || times > 100_000)
@@ -53,23 +53,23 @@ public class LambdaFinder
             var validSearchMembers = _lambdaDatabase.GetLambdasByInputType(inputTypeString);
 
             var searchMembers = validSearchMembers as Lambda[] ?? validSearchMembers.ToArray();
-            var already = searchMembers.AsParallel().Any((l) => CheckMethod(l, search));
+            var already = searchMembers.Any((l) => CheckMethod(l, search));
 
             if (already)
             {
                 var found = searchMembers.First((l) => CheckMethod(l, search));
-                pastLambdas.Add(found);
-                return pastLambdas;
+                pastLambdas.Add(found.Id);
+                return pastLambdas.Select(i => _lambdaDatabase.GetLambdaById(i)).ToList()!;
             }
 
-            Parallel.ForEach(searchMembers, lambda =>
+            foreach (var lambda in searchMembers)
             {
                 var transformed = TransformInputs(lambda, search);
                 var newLambdas = pastLambdas.ToList();
-                newLambdas.Add(lambda);
+                newLambdas.Add(lambda.Id);
 
                 pq.Enqueue((newLambdas, transformed), (len + 1, points - lambda.TimesUsed));
-            });
+            }
         }
 
         return new List<Lambda>();

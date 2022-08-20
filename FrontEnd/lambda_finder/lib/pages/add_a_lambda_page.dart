@@ -5,36 +5,28 @@ import 'package:code_text_field/code_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:highlight/languages/cs.dart';
-import 'package:highlight/languages/dart.dart';
-import 'package:highlight/languages/python.dart';
 import 'package:flutter_highlight/themes/monokai-sublime.dart';
 import 'package:lambda_finder/service/lambda_service.dart';
-import 'package:tuple/tuple.dart';
-
+import '../misc/language_settings.dart';
 import '../models/lambda.dart';
 import '../widgets/code_area.dart';
-import '../widgets/upload_lambda_form.dart';
-import 'package:desktop/desktop.dart' as desktop;
+import '../widgets/lambda_form.dart';
 
 class AddALambdaPage extends HookConsumerWidget {
   const AddALambdaPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final languages = {
-      0: Tuple2("C#", cs),
-      1: Tuple2("Dart", dart),
-      2: Tuple2("Python", python),
-    };
-
     final language = StateProvider<int>((ref) => 0);
     final codeController = StateProvider.autoDispose<CodeController>((ref) {
       final int languageId = ref.watch(language);
+      final languageInfo = ref.watch(languages)[languageId]!;
+
       final controller = CodeController(
-          language: languages[languageId]!.item2,
-          theme: monokaiSublimeTheme,
-          text: "Write some code here.");
+        language: languageInfo.item2,
+        theme: monokaiSublimeTheme,
+        text: languageInfo.item3,
+      );
 
       ref.onDispose(() {
         controller.dispose();
@@ -48,12 +40,15 @@ class AddALambdaPage extends HookConsumerWidget {
     final emailController = useTextEditingController();
 
     final sendLambda = () async {
-      final res = ref.read(lambdaServiceProvider).postLambda(Lambda(
-          name: nameController.text,
-          description: descriptionController.text,
-          email: emailController.text,
-          programmingLanguage: languages[ref.read(language)]!.item1,
-          code: ref.read(codeController).rawText));
+      final res = ref.read(lambdaServiceProvider).postLambda(
+            Lambda(
+                name: nameController.text,
+                description: descriptionController.text,
+                email: emailController.text,
+                programmingLanguage:
+                    ref.read(languages)[ref.read(language)]!.item1,
+                code: ref.read(codeController).rawText),
+          );
 
       res.catchError((error, stackTrace) {
         var snackBar = SnackBar(
@@ -95,14 +90,13 @@ class AddALambdaPage extends HookConsumerWidget {
           child: CodeArea(
             codeController: codeController,
             language: language,
-            languages: languages,
           ),
         ),
         Expanded(
           flex: 2,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: UploadLambdaFormWidget(
+            child: LambdaFormWidget(
               nameController: nameController,
               descriptionController: descriptionController,
               emailController: emailController,

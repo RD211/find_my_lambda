@@ -21,4 +21,9 @@ class LambdaService {
     });
     return Lambda.fromJson(response.data);
   }
+
+  Future<Lambda> getLambda(int lambdaId) async {
+    Response response = await _dio.get('$_baseUrl/Lambda?id=$lambdaId');
+    return Lambda.fromJson(response.data);
+  }
 }

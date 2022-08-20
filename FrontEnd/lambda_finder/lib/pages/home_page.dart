@@ -2,6 +2,7 @@ import 'package:desktop/desktop.dart' as desktop;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lambda_finder/pages/add_a_lambda_page.dart';
+import 'package:lambda_finder/pages/view_a_lambda_page.dart';
 
 class HomePage extends HookWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class HomePage extends HookWidget {
         icon: desktop.Icons.add,
       ),
       desktop.NavItem(
-        builder: (context, i) => const AddALambdaPage(),
+        builder: (context, i) => const ViewALambdaPage(lambdaId: 49),
         title: 'page 1',
         icon: desktop.Icons.search,
       ),
