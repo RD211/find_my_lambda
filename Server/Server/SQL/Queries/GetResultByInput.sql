@@ -1,1 +1,0 @@
-SELECT * FROM dbo.cached_results WHERE lambda_id = @id AND input = @input;

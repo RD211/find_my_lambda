@@ -1,0 +1,1 @@
+SELECT dbo.fogs.fog_id, dbo.fogs.input_type, dbo.fogs.return_type, dbo.fogs.member_count, dbo.fogs.times_used FROM dbo.fogs_lambdas INNER JOIN dbo.fogs ON dbo.fogs.fog_id = dbo.fogs_lambdas.fog_id WHERE dbo.fogs_lambdas.lambda_id = @lambda_id AND dbo.fogs_lambdas.position = 0 ;

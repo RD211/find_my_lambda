@@ -1,0 +1,1 @@
+SELECT * FROM dbo.fogs WHERE fog_id = @id;

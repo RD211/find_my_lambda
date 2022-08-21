@@ -1,12 +1,12 @@
-using System.Globalization;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
+using Server.Lambda_Input;
 
 namespace Server.Parser;
 
 public static class InputParser
 {
-    public static string Convert(string input)
+    public static LambdaInput Parse(string input)
     {
         var stream = CharStreams.fromString(input);
         var lexer = new LambdaLexer(stream);
@@ -15,10 +15,10 @@ public static class InputParser
 
         IParseTree tree = parser.input();
 
-        return Walk(tree, parser);
+        return WalkValueStringToLambdaInput(tree, parser);
     }
     
-    private static string Walk(IParseTree tree, LambdaParser parser)
+    private static LambdaInput WalkValueStringToLambdaInput(IParseTree tree, LambdaParser parser)
     {
         
         if (tree.Payload is IToken token)
@@ -26,15 +26,15 @@ public static class InputParser
             switch (TokenToStringIdentifier(token, parser))
             {
                 case "true":
-                    return "bool";
+                    return new LambdaBool(true);
                 case "false":
-                    return "bool";
+                    return new LambdaBool(false);
                 case "STRING":
-                    return "string";
+                    return new LambdaString(token.Text.Substring(1,token.Text.Length - 2));
                 case "INTEGER":
-                    return "int";
+                    return new LambdaInt(int.Parse(token.Text));
                 case "REAL":
-                    return "double";
+                    return new LambdaDouble(double.Parse(token.Text));
             }
         }
 
@@ -44,13 +44,16 @@ public static class InputParser
 
         return ruleName switch
         {
-            "tuple" => @$"({string.Join(',',Enumerable.Range(0, rule.ChildCount)
+            "tuple" => new LambdaTuple(Enumerable.Range(0, rule.ChildCount)
                 .Where(i => i%2 == 1)
-                .Select(i => Walk(rule.GetChild(i), parser))
-                .ToArray())})",
-            "arr" => $"[{Walk(rule.GetChild(1), parser)}]",
-            "input" => Walk(tree.GetChild(0), parser),
-            "value" => Walk(tree.GetChild(0), parser),
+                .Select(i => WalkValueStringToLambdaInput(rule.GetChild(i), parser))
+                .ToList()),
+            "arr" => new LambdaArray(Enumerable.Range(0, rule.ChildCount)
+                .Where(i => i%2 == 1)
+                .Select(i => WalkValueStringToLambdaInput(rule.GetChild(i), parser))
+                .ToList()),
+            "input" => WalkValueStringToLambdaInput(tree.GetChild(0), parser),
+            "value" => WalkValueStringToLambdaInput(tree.GetChild(0), parser),
             _ => throw new ArgumentException("Wrong value string provided.")
         };
     }

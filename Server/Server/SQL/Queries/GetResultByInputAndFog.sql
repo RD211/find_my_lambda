@@ -1,0 +1,1 @@
+SELECT * FROM dbo.cached_results WHERE fog_id = @id AND input = @input;

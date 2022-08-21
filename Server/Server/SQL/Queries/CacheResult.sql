@@ -1,1 +1,1 @@
-INSERT INTO cached_results(lambda_id, input, result) VALUES(@id, @input, @result);
+INSERT INTO cached_results(fog_id, input, result) VALUES(@id, @input, @result);

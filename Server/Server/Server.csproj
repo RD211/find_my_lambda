@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>5b899665-676e-4330-95d5-1d6c63584ed9</UserSecretsId>
+    <LangVersion>10</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,20 +17,55 @@
 
   <ItemGroup>
     <None Remove="SQL\Queries\GetById.sql" />
-    <EmbeddedResource Include="SQL\Queries\GetById.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <None Remove="SQL\Queries\CacheResult.sql" />
     <EmbeddedResource Include="SQL\Queries\CacheResult.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Remove="SQL\Queries\GetByInputType.sql" />
-    <EmbeddedResource Include="SQL\Queries\GetByInputType.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <None Remove="SQL\Queries\GetResultByInput.sql" />
-    <EmbeddedResource Include="SQL\Queries\GetResultByInput.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Remove="SQL\Queries\GetFogById.sql" />
+    <EmbeddedResource Include="SQL\Queries\GetFogById.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="SQL\Queries\GetFogByInputType.sql" />
+    <EmbeddedResource Include="SQL\Queries\GetFogByInputType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="SQL\Queries\GetFogMembers.sql" />
+    <EmbeddedResource Include="SQL\Queries\GetFogMembers.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="SQL\Queries\GetLambdaById.sql" />
+    <EmbeddedResource Include="SQL\Queries\GetLambdaById.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="SQL\Queries\GetLambdaByInputType.sql" />
+    <EmbeddedResource Include="SQL\Queries\GetLambdaByInputType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="SQL\Queries\GetResultByInputAndFog.sql" />
+    <EmbeddedResource Include="SQL\Queries\GetResultByInputAndFog.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="SQL\Queries\GetResultsByInput.sql" />
+    <EmbeddedResource Include="SQL\Queries\GetResultsByInput.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="SQL\Queries\GetSelfFogOfLambda.sql" />
+    <EmbeddedResource Include="SQL\Queries\GetSelfFogOfLambda.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="SQL\Queries\InsertFog.sql" />
+    <EmbeddedResource Include="SQL\Queries\InsertFog.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="SQL\Queries\InsertFogMember.sql" />
+    <EmbeddedResource Include="SQL\Queries\InsertFogMember.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="SQL\Queries\InsertLambda.sql" />
+    <EmbeddedResource Include="SQL\Queries\InsertLambda.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 

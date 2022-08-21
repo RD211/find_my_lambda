@@ -26,11 +26,13 @@ class ViewALambdaPage extends HookConsumerWidget {
         } else if (snapshot.hasError) {
           return const Text("Something went wrong or lambda does not exist.");
         } else {
-          return Center(
-              child: Container(
-                  width: 100,
-                  height: 100,
-                  child: const desktop.CircularProgressIndicator()));
+          return const Center(
+            child: SizedBox(
+              width: 100,
+              height: 100,
+              child: desktop.CircularProgressIndicator(),
+            ),
+          );
         }
       },
       future: data,

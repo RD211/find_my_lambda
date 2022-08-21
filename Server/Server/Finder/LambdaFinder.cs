@@ -1,4 +1,3 @@
-using System.Data.SqlClient;
 using Newtonsoft.Json.Linq;
 using Server.Communication;
 using Server.Models;
@@ -18,21 +17,21 @@ public class LambdaFinder
     }
     
     
-    private bool CheckMethod(Lambda lambda, SearchPayload searchPayload)
+    private bool CheckFog(Fog fog, SearchPayload searchPayload)
     {
-        var results = searchPayload.Inputs.Select(s => GetResultOfInput(lambda, s)).ToArray();
+        var results = searchPayload.Inputs.Select(s => GetResultOfFog(fog, s)).ToArray();
         return results.SequenceEqual(searchPayload.Results);
     }
     
-    private SearchPayload TransformInputs(Lambda lambda, SearchPayload searchPayload)
+    private SearchPayload TransformInputs(Fog fog, SearchPayload searchPayload)
     {
-        var results = searchPayload.Inputs.Select(s => GetResultOfInput(lambda, s)).ToArray();
-        if (results.Any(s => s is null))
+        var results = searchPayload.Inputs.Select(s => GetResultOfFog(fog, s)).ToArray();
+        if (results is null || results.Any(s => s is null))
         {
             throw new ArgumentException("The search payload was badly written.");
         }
         
-        return new SearchPayload(results!, searchPayload.Results);
+        return new SearchPayload((string[])results, searchPayload.Results);
     }
 
     public List<Lambda> Find(SearchPayload searchPayload)
@@ -41,46 +40,78 @@ public class LambdaFinder
         pq.Enqueue((new List<int>(), searchPayload), (0,0));
 
         var times = 0;
-        while (pq.Count > 0 || times > 100_000)
+        while (pq.Count > 0 || times > 10_000)
         {
             times++;
             pq.TryDequeue(out var values, out var priorities);
-            var (pastLambdas, search) = values;
+            var (pastFogs, search) = values;
             var (len, points) = priorities;
             
-            var inputTypeString = InputParser.Convert(search.Inputs.First());
+            var inputTypeString = InputParser.Parse(search.Inputs.First()).ToGeneric().GetStringRepresentation();
         
-            var validSearchMembers = _lambdaDatabase.GetLambdasByInputType(inputTypeString);
+            var validSearchMembers = _lambdaDatabase.GetFogsByInputType(inputTypeString);
 
-            var searchMembers = validSearchMembers as Lambda[] ?? validSearchMembers.ToArray();
-            var already = searchMembers.Any((l) => CheckMethod(l, search));
+            var searchMembers = validSearchMembers as Fog[] ?? validSearchMembers.ToArray();
+            var already = searchMembers.Any(l => CheckFog(l, search));
 
             if (already)
             {
-                var found = searchMembers.First((l) => CheckMethod(l, search));
-                pastLambdas.Add(found.Id);
-                return pastLambdas.Select(i => _lambdaDatabase.GetLambdaById(i)).ToList()!;
+                var found = searchMembers.First((l) => CheckFog(l, search));
+                pastFogs.Add(found.Id);
+                var res = pastFogs
+                    .SelectMany(i => _lambdaDatabase.GetFogMembers(i)).ToList();
+                
+                if(pastFogs.Count > 1)
+                    _lambdaDatabase.InsertFog(res);
+                
+                return res
+                    .Select(i => _lambdaDatabase.GetLambdaById(i)!)
+                    .ToList();
             }
 
-            foreach (var lambda in searchMembers)
+            foreach (var fog in searchMembers)
             {
-                var transformed = TransformInputs(lambda, search);
-                var newLambdas = pastLambdas.ToList();
-                newLambdas.Add(lambda.Id);
+                var transformed = TransformInputs(fog, search);
+                var newFogs = pastFogs.ToList();
+                newFogs.Add(fog.Id);
 
-                pq.Enqueue((newLambdas, transformed), (len + 1, points - lambda.TimesUsed));
+                pq.Enqueue((newFogs, transformed), (len + fog.MemberCount, points - fog.TimesUsed));
             }
         }
 
         return new List<Lambda>();
     }
 
-    private string? GetResultOfInput(Lambda lambda, string input)
+    private string? GetResultOfFog(Fog fog, string input)
     {
+        try
+        {
+            var cached = _lambdaDatabase.GetResultByInputAndFog(fog.Id, input);
+            if (cached is not null) return cached;
 
-        var cached = _lambdaDatabase.GetResultByInput(lambda.Id, input);
+            var members = _lambdaDatabase.GetFogMembers(fog.Id).ToList();
 
+            var output = members.Aggregate(input, (s, i) => GetResultOfInput(i, s)!);
+            
+            if(members.Count > 1)
+                _lambdaDatabase.CacheResult(fog.Id, input, output);
+            
+            return output;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return null;
+        }
+    }
+
+    private string? GetResultOfInput(int lambdaId, string input)
+    {
+        var fogId = _lambdaDatabase.GetSelfFogOfLambda(lambdaId).Id;
+        var cached = _lambdaDatabase.GetResultByInputAndFog(fogId, input);
         if (cached is not null) return cached;
+
+        var lambda = _lambdaDatabase.GetLambdaById(lambdaId)!;
         
         var result = LanguageServer.Send(new EvaluatePayload(
             Action.Evaluate, lambda.ProgrammingLanguage, new[] { input }, lambda.Code));
@@ -95,8 +126,8 @@ public class LambdaFinder
         {
             return null;
         }
-        
-        _lambdaDatabase.CacheResult(lambda.Id, input, output);
+
+        _lambdaDatabase.CacheResult(fogId, input, output);
         return output;
     }
 }

@@ -2,7 +2,7 @@ using Server.Parser;
 
 namespace ServerTests;
 
-public class Tests
+public class LambdaParseTests
 {
     [SetUp]
     public void Setup()
@@ -13,6 +13,6 @@ public class Tests
     [Test]
     public void Test1()
     {
-        Console.WriteLine(InputParser.Convert("(1,2,3)"));
+        Console.WriteLine(InputParser.Parse("([ 1, 2, 3], 5,\" hi\")").GetStringRepresentation());
     }
 }

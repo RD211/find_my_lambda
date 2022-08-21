@@ -84,7 +84,7 @@ public class LambdaController
             var types = resultTypes.Payload as JArray;
             
             
-            _lambdaDatabase.InsertLambda(
+            var id = _lambdaDatabase.InsertLambda(
                 lambdaPayload.Name,
                 lambdaPayload.Description,
                 lambdaPayload.Email,
@@ -95,7 +95,7 @@ public class LambdaController
             );
 
             Console.WriteLine("Added new lambda to database!");
-            return new OkObjectResult(_lambdaDatabase.GetLambdaById(47));
+            return new OkObjectResult(_lambdaDatabase.GetLambdaById(id));
         }
         catch (SqlException e)
         {
