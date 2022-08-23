@@ -6,15 +6,15 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:desktop/desktop.dart' as desktop;
 import 'package:lambda_finder/models/search_payload.dart';
 import 'package:lambda_finder/pages/view_a_lambda_page.dart';
 import 'package:lambda_finder/service/lambda_service.dart';
-import 'package:lambda_finder/widgets/lambda_text_field_input_widget.dart';
 import 'package:tuple/tuple.dart';
 
 import '../graph_viewer/GraphView.dart';
 import '../models/lambda.dart';
+import '../widgets/add_remove_input_output_widget.dart';
+import '../widgets/input_output_widget.dart';
 
 class FindALambdaPage extends StatefulHookConsumerWidget {
   const FindALambdaPage({Key? key}) : super(key: key);
@@ -31,7 +31,7 @@ class _FindALambdaPageState extends ConsumerState<FindALambdaPage> {
       onTap: () {
         Navigator.push(
             context,
-            new MaterialPageRoute(
+            MaterialPageRoute(
                 builder: (_) => ViewALambdaPage(lambdaId: lambda.id!)));
       },
       child: Container(
@@ -63,8 +63,7 @@ class _FindALambdaPageState extends ConsumerState<FindALambdaPage> {
     return g;
   }
 
-  Widget graphView =
-      Text('Waiting for lambdas!', style: TextStyle(color: Colors.red));
+  Widget graphView = const SizedBox.shrink();
   @override
   Widget build(BuildContext context) {
     final numberOfControllers = useState(1);
@@ -93,11 +92,23 @@ class _FindALambdaPageState extends ConsumerState<FindALambdaPage> {
 
       var search = SearchPayload(inputs: inputs, results: results);
 
-      graphView =
-          Text('Waiting for lambdas!', style: TextStyle(color: Colors.red));
+      graphView = const SizedBox.shrink();
       setState(() {});
 
       final res = ref.read(lambdaServiceProvider).searchLambda(search);
+
+      var waitSnack = SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Search sent!',
+          message: 'We are now waiting on the server. Be patient!',
+          contentType: ContentType.warning,
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(waitSnack);
 
       res.catchError((error, stackTrace) {
         var snackBar = SnackBar(
@@ -195,92 +206,5 @@ class _FindALambdaPageState extends ConsumerState<FindALambdaPage> {
         ),
       ],
     ));
-  }
-}
-
-class AddRemoveInputsWidget extends StatelessWidget {
-  const AddRemoveInputsWidget({
-    Key? key,
-    required this.numberOfControllers,
-  }) : super(key: key);
-
-  final ValueNotifier<int> numberOfControllers;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        if (numberOfControllers.value < 100)
-          desktop.Button(
-            leading: const Icon(
-              Icons.add,
-              color: Colors.green,
-            ),
-            trailing: const Text(
-              "Add another input!",
-              style: TextStyle(color: Colors.green, fontSize: 16),
-            ),
-            onPressed: () {
-              numberOfControllers.value = numberOfControllers.value + 1;
-            },
-            color: Colors.green,
-          ),
-        if (numberOfControllers.value > 1)
-          desktop.Button(
-            leading: const Icon(
-              Icons.remove,
-              color: Colors.red,
-            ),
-            trailing: const Text(
-              "Remove input!",
-              style: TextStyle(color: Colors.red, fontSize: 16),
-            ),
-            onPressed: () {
-              numberOfControllers.value = numberOfControllers.value - 1;
-            },
-            color: Colors.green,
-          ),
-      ],
-    );
-  }
-}
-
-class InputOutputWidget extends StatelessWidget {
-  const InputOutputWidget({
-    Key? key,
-    required this.inputController,
-    required this.outputController,
-  }) : super(key: key);
-
-  final TextEditingController inputController;
-  final TextEditingController outputController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: LambdaTextFieldInput(
-              nameController: inputController,
-              maxLines: 1,
-              text: "Input",
-            ),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: LambdaTextFieldInput(
-              nameController: outputController,
-              maxLines: 1,
-              text: "Output",
-            ),
-          ),
-        ),
-      ],
-    );
   }
 }
