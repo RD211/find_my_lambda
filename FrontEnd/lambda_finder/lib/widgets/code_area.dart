@@ -25,6 +25,7 @@ class CodeArea extends HookConsumerWidget {
         Container(
           color: Theme.of(context).colorScheme.secondary,
           child: ListView(
+            primary: false,
             children: [
               CodeField(
                 enabled: !readOnly,

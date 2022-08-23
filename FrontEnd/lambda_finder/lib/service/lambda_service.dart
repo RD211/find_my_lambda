@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:lambda_finder/environment_config.dart';
+import 'package:lambda_finder/models/search_payload.dart';
 
 import '../models/lambda.dart';
 
@@ -20,6 +24,18 @@ class LambdaService {
       'code': lambda.code
     });
     return Lambda.fromJson(response.data);
+  }
+
+  Future<List<Lambda>> searchLambda(SearchPayload searchPayload) async {
+    Response response = await _dio.post(
+      '$_baseUrl/Lambda/search',
+      data: searchPayload.toJson(),
+    );
+
+    var eles = (response.data as List<dynamic>)
+        .map((e) => Lambda.fromJson(e))
+        .toList();
+    return eles;
   }
 
   Future<Lambda> getLambda(int lambdaId) async {
