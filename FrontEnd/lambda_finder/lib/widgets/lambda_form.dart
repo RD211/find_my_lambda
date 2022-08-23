@@ -63,12 +63,23 @@ class LambdaFormWidget extends StatelessWidget {
             ),
           ],
         ),
-        readOnly
-            ? const SizedBox.shrink()
-            : Positioned(
-                bottom: 0,
-                right: 0,
-                child: TextButton(
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: readOnly
+              ? TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.green,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    "Go back!",
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                )
+              : TextButton(
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.green,
                   ),
@@ -78,7 +89,7 @@ class LambdaFormWidget extends StatelessWidget {
                     style: TextStyle(color: Colors.white, fontSize: 24),
                   ),
                 ),
-              )
+        )
       ],
     );
   }

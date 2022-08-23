@@ -1,20 +1,18 @@
 // ignore_for_file: depend_on_referenced_packages, prefer_function_declarations_over_variables, library_private_types_in_public_api
 
-import 'dart:math';
-
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lambda_finder/models/search_payload.dart';
-import 'package:lambda_finder/pages/view_a_lambda_page.dart';
 import 'package:lambda_finder/service/lambda_service.dart';
 import 'package:tuple/tuple.dart';
 
 import '../models/lambda.dart';
 import '../widgets/add_remove_input_output_widget.dart';
 import '../widgets/input_output_widget.dart';
+import '../widgets/lambda_node_widget.dart';
 
 class FindALambdaPage extends StatefulHookConsumerWidget {
   const FindALambdaPage({Key? key}) : super(key: key);
@@ -24,31 +22,6 @@ class FindALambdaPage extends StatefulHookConsumerWidget {
 }
 
 class _FindALambdaPageState extends ConsumerState<FindALambdaPage> {
-  Random r = Random();
-
-  Widget lambdaWidget(Lambda lambda) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => ViewALambdaPage(lambdaId: lambda.id!)));
-      },
-      child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4),
-            boxShadow: [
-              BoxShadow(color: Colors.blue[100]!, spreadRadius: 1),
-            ],
-          ),
-          child: Column(children: [
-            Text(lambda.name),
-            Text(lambda.programmingLanguage),
-          ])),
-    );
-  }
-
   Graph fromLambdasToGraph(List<Lambda>? lambdas) {
     final Graph g = Graph();
     if (lambdas == null) return g;
@@ -148,7 +121,9 @@ class _FindALambdaPageState extends ConsumerState<FindALambdaPage> {
             ..style = PaintingStyle.stroke,
           builder: (Node node) {
             var a = node.key!.value as MapEntry<int, Lambda>;
-            return lambdaWidget(a.value);
+            return LambdaNodeWidget(
+              lambda: a.value,
+            );
           },
         );
 

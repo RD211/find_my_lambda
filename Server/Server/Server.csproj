@@ -69,4 +69,16 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Finder\Lambda Plan\LambdaArrayMap.cs" />
+    <Compile Remove="Finder\Lambda Plan\LambdaFunction.cs" />
+    <Compile Remove="Finder\Lambda Plan\LambdaMetaArray.cs" />
+    <Compile Remove="Finder\Lambda Plan\LambdaMetaTuple.cs" />
+    <Compile Remove="Finder\Lambda Plan\LambdaNode.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Finder\Lambda Plan" />
+  </ItemGroup>
+
 </Project>

@@ -18,7 +18,7 @@ public class LambdaDatabase
         InsertFog,
         InsertFogMember,
         InsertLambda,
-        GetSelfFogOfLambda
+        GetSelfFogOfLambda,
     }
 
     private readonly Dictionary<SqlOperation, string> _sql;
@@ -223,7 +223,7 @@ public class LambdaDatabase
 
         return found;
     }
-    
+
     public IEnumerable<int> GetFogMembers(int fogId)
     {
         using var connection = new SqlConnection(_connectionString);
