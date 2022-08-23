@@ -5,13 +5,13 @@ import 'dart:math';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:graphview/GraphView.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lambda_finder/models/search_payload.dart';
 import 'package:lambda_finder/pages/view_a_lambda_page.dart';
 import 'package:lambda_finder/service/lambda_service.dart';
 import 'package:tuple/tuple.dart';
 
-import '../graph_viewer/GraphView.dart';
 import '../models/lambda.dart';
 import '../widgets/add_remove_input_output_widget.dart';
 import '../widgets/input_output_widget.dart';
