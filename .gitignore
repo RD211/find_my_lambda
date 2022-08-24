@@ -12,6 +12,8 @@
 /Server/Server/bin
 /Server/ServerTests/bin
 /Server/ServerTests/obj
+/Server/DatabaseIntegrationTests/obj
+/Server/DatabaseIntegrationTests/bin
 /FrontEnd/lambda_finder/.idea
 /FrontEnd/lambda_finder/.dart_tool
 /FrontEnd/lambda_finder/build

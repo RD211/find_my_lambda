@@ -1,3 +1,4 @@
+using System.Data;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using Server.Lambda_Input;
@@ -50,7 +51,28 @@ public static class InputParser
         if (tree.Payload is not RuleContext rule) throw new ArgumentException("Wrong value string provided.");
         
         var ruleName = parser.RuleNames[rule.RuleIndex];
+        if (ruleName is "tuple" or "arr")
+        {
+            if (rule.GetChild(0) is not TerminalNodeImpl)
+            {
+                throw new ArgumentException("Invalid start to array or tuple.");
+            }
+            
+            if (rule.GetChild(rule.ChildCount - 1) is not TerminalNodeImpl)
+            {
+                throw new ArgumentException("Invalid end to array or tuple.");
+            }
 
+            var start = (rule.GetChild(0) as TerminalNodeImpl)!;
+            var end = (rule.GetChild(rule.ChildCount - 1) as TerminalNodeImpl)!;
+            
+            if (!(start.GetText() == "(" && end.GetText() == ")") &&
+                !(start.GetText() == "[" && end.GetText() == "]"))
+            {
+                throw new ArgumentException("Input mismatch exception on array or tuple.");
+            }
+        }
+        
         return ruleName switch
         {
             "tuple" => new LambdaTuple(Enumerable.Range(0, rule.ChildCount)

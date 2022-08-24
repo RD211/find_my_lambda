@@ -1,4 +1,5 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/home/rd211/.var/app/com.jetbrains.Rider/cache/JetBrains/Rider2022.2/resharper-host/temp/Rider/vAny/CoverageData/_Server.534495499/Snapshot/snapshot.utdcvr</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=73561363_002D22b4_002D40db_002Dabff_002D0529e2627b12/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;NUnit3x::93FAF59B-022A-4744-8BB9-5BEC4EC9F711::net6.0::ServerTests.LambdaParseTests.TestsParse&lt;/TestId&gt;
@@ -7,5 +8,10 @@
     &lt;TestId&gt;NUnit3x::93FAF59B-022A-4744-8BB9-5BEC4EC9F711::net6.0::ServerTests.LambdaParseTests.TestTooManyTupleElements&lt;/TestId&gt;
     &lt;TestId&gt;NUnit3x::93FAF59B-022A-4744-8BB9-5BEC4EC9F711::net6.0::ServerTests.LambdaInputTests.TestsToString&lt;/TestId&gt;
     &lt;TestId&gt;NUnit3x::93FAF59B-022A-4744-8BB9-5BEC4EC9F711::net6.0::ServerTests.LambdaInputTests&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::93FAF59B-022A-4744-8BB9-5BEC4EC9F711::net6.0::ServerTests.LambdaParseTests.TestsInvalid&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::93FAF59B-022A-4744-8BB9-5BEC4EC9F711::net6.0::ServerTests.LambdaParseTests.TestWeird&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::ACB60AA7-C89B-49AB-A818-8A05A5BD1B47::net6.0::DatabaseIntegrationTests.BasicWebTests.ReturnsHomePageWithProductListing&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::ACB60AA7-C89B-49AB-A818-8A05A5BD1B47::net6.0::DatabaseIntegrationTests.BasicWebTests.ExecuteCommand&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::ACB60AA7-C89B-49AB-A818-8A05A5BD1B47::net6.0::DatabaseIntegrationTests.BasicWebTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

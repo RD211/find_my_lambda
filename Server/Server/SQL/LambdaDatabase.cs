@@ -41,6 +41,15 @@ public class LambdaDatabase
             .ToDictionary(op => op, GetSqlQuery);
     }
 
+    public LambdaDatabase(string connectionString)
+    {
+        _connectionString = connectionString;
+        
+        _sql = Enum.GetValues(typeof(SqlOperation))
+            .Cast<SqlOperation>()
+            .ToDictionary(op => op, GetSqlQuery);
+    }
+
     public Lambda? GetLambdaById(int id)
     {
         using var connection = new SqlConnection(_connectionString);

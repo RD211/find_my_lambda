@@ -41,6 +41,12 @@ public class LambdaArray : LambdaInput
             throw new ArgumentException("Bad arguments for lambda array. " +
                                         "Generic type provided in non generic constructor.");
         }
+
+        if (values.Select(input => input.ToGeneric().ToString()).ToHashSet().Count != 1)
+        {
+            throw new ArgumentException("Bad arguments for lambda array. " +
+                                        "Elements of multiple types provided.");
+        }
         
         _values = values;
     }

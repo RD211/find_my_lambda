@@ -47,7 +47,24 @@ public class LambdaInputTests
     {
         Assert.That(lambdaInput.GetValueRepresentation(), Is.EqualTo(value));
     }
+    
+    [TestCaseSource(nameof(InvalidValueCases))]
+    public void TestsToValueInvalid(LambdaInput lambdaInput)
+    {
+        Assert.Throws<Exception>(() => lambdaInput.GetValueRepresentation());
+    }
 
+    private static object[] InvalidValueCases =
+    {
+        
+        new object[]{new LambdaInt()},
+        new object[]{new LambdaBool()},
+        new object[]{new LambdaDouble()},
+        new object[]{new LambdaString()},
+        new object[]{new LambdaArray(new LambdaBool())},
+        new object[]{new LambdaTuple(new List<LambdaInput>{new LambdaBool()})},
+    };
+    
     private static object[] ValueCases =
     {
         // Int tests
@@ -72,6 +89,57 @@ public class LambdaInputTests
         
         // Tuple tests
         new object[]{new LambdaTuple(new List<LambdaInput>{new LambdaInt(1), new LambdaInt(2)}), (1,2)},
+        new object[]{new LambdaTuple(new List<LambdaInput>
+        {
+            new LambdaInt(1), 
+            new LambdaInt(2),
+            new LambdaInt(3),
+        }), (1,2,3)},
+        new object[]{new LambdaTuple(new List<LambdaInput>
+        {
+            new LambdaInt(1), 
+            new LambdaInt(2),
+            new LambdaInt(3),
+            new LambdaInt(4),
+        }), (1,2,3,4)},
+        new object[]{new LambdaTuple(new List<LambdaInput>
+        {
+            new LambdaInt(1), 
+            new LambdaInt(2),
+            new LambdaInt(3),
+            new LambdaInt(4),
+            new LambdaInt(5),
+        }), (1,2,3,4,5)},
+        new object[]{new LambdaTuple(new List<LambdaInput>
+        {
+            new LambdaInt(1), 
+            new LambdaInt(2),
+            new LambdaInt(3),
+            new LambdaInt(4),
+            new LambdaInt(5),
+            new LambdaInt(6),
+        }), (1,2,3,4,5,6)},
+        new object[]{new LambdaTuple(new List<LambdaInput>
+        {
+            new LambdaInt(1), 
+            new LambdaInt(2),
+            new LambdaInt(3),
+            new LambdaInt(4),
+            new LambdaInt(5),
+            new LambdaInt(6),
+            new LambdaInt(7),
+        }), (1,2,3,4,5,6,7)},
+        new object[]{new LambdaTuple(new List<LambdaInput>
+        {
+            new LambdaInt(1), 
+            new LambdaInt(2),
+            new LambdaInt(3),
+            new LambdaInt(4),
+            new LambdaInt(5),
+            new LambdaInt(6),
+            new LambdaInt(7),
+            new LambdaInt(8),
+        }), (1,2,3,4,5,6,7,8)},
         new object[]{new LambdaTuple(new List<LambdaInput>{new LambdaInt(1)}), ValueTuple.Create(1)},
     };
 

@@ -17,7 +17,7 @@ public class LambdaParseTests
     {
         Assert.Throws<ArgumentException>(() => InputParser.Parse(input));
     }
-    
+
     static object[] ParseCases = {
         // Bool tests
         new object[]{"true", new LambdaBool(true)},
@@ -96,6 +96,13 @@ public class LambdaParseTests
     private static object[] InvalidCases =
     {
         "",
+        "(,)",
+        "(,,,)",
+        "[][]",
+        "[",
+        "'",
+        "ad",
+        "'ada'",
         "True",
         "tRue",
         "False",
@@ -103,6 +110,12 @@ public class LambdaParseTests
         "-67878787687678876867",
         "()",
         "[]",
+        "[,]",
+        "[1,,2]",
+        "[1)",
+        "[[3]",
+        "]",
+        "[1#2]",
         "[1,\"hi\"]",
         "(1,2,3,4,5,6,7,8,9,10,11,12)",
         "[][][][",
