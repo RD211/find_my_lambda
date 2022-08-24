@@ -1,12 +1,12 @@
 using System.Data.SqlClient;
-using Newtonsoft.Json.Linq;
-using Server.Communication;
-using Server.Lambda_Input;
-using Server.Parser;
-using Server.SQL;
 
 namespace Server.Models;
 
+/**
+ * The fog class.
+ * It reflects the data found in the database for fog.
+ * A fog is a composition of 1 or more functions.
+ */
 public class Fog
 {
     public static Fog ReadFog(SqlDataReader reader)

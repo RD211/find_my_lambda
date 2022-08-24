@@ -6,16 +6,25 @@ namespace Server.Parser;
 
 public static class InputParser
 {
+    
     public static LambdaInput Parse(string input)
     {
-        var stream = CharStreams.fromString(input);
-        var lexer = new LambdaLexer(stream);
-        var tokens = new CommonTokenStream(lexer);
-        var parser = new LambdaParser(tokens) { BuildParseTree = true };
+        try
+        {
+            var stream = CharStreams.fromString(input);
+            var lexer = new LambdaLexer(stream);
+            var tokens = new CommonTokenStream(lexer);
+            var parser = new LambdaParser(tokens) { BuildParseTree = true };
 
-        IParseTree tree = parser.input();
+            IParseTree tree = parser.input();
 
-        return WalkValueStringToLambdaInput(tree, parser);
+            return WalkValueStringToLambdaInput(tree, parser);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            throw new ArgumentException("Input is of invalid format.");
+        }
     }
     
     private static LambdaInput WalkValueStringToLambdaInput(IParseTree tree, LambdaParser parser)
@@ -25,9 +34,9 @@ public static class InputParser
         {
             switch (TokenToStringIdentifier(token, parser))
             {
-                case "true":
+                case "'true'":
                     return new LambdaBool(true);
-                case "false":
+                case "'false'":
                     return new LambdaBool(false);
                 case "STRING":
                     return new LambdaString(token.Text.Substring(1,token.Text.Length - 2));

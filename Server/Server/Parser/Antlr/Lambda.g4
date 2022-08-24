@@ -22,7 +22,6 @@ value
    | arr
    | 'true'
    | 'false'
-   | 'null'
    ;
 
 

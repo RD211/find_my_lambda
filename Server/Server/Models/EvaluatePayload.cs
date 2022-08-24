@@ -1,5 +1,10 @@
 namespace Server.Models;
 
+/**
+ * Action enum.
+ * Specifies the action that the
+ * language server must execute.
+ */
 public enum Action
 {
     Evaluate,
@@ -9,7 +14,8 @@ public enum Action
 }
 
 /**
- * The payload that will be sent.
+ * The payload that will be sent
+ * to the language evaluation server for the specific language.
  */
 public class EvaluatePayload
 {
