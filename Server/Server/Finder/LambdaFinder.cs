@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using Server.Communication;
 using Server.Models;
@@ -33,16 +34,17 @@ public class LambdaFinder
         
         return new SearchPayload((string[])results, searchPayload.Results);
     }
-
-    public List<Lambda> Find(SearchPayload searchPayload)
+    
+    public async Task<List<Lambda>> Find(SearchPayload searchPayload)
     {
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
+        
         var pq = new PriorityQueue<(List<int>, SearchPayload), (int, int)>();
         pq.Enqueue((new List<int>(), searchPayload), (0,0));
 
-        var times = 0;
-        while (pq.Count > 0 || times > 10_000)
+        while (pq.Count > 0)
         {
-            times++;
             pq.TryDequeue(out var values, out var priorities);
             var (pastFogs, search) = values;
             var (len, points) = priorities;
@@ -69,13 +71,26 @@ public class LambdaFinder
                     .ToList();
             }
 
-            foreach (var fog in searchMembers)
+
+            var newMembers = searchMembers.Select(fog => Task.Run(() =>
             {
                 var transformed = TransformInputs(fog, search);
                 var newFogs = pastFogs.ToList();
                 newFogs.Add(fog.Id);
 
-                pq.Enqueue((newFogs, transformed), (len + fog.MemberCount, points - fog.TimesUsed));
+                return ((newFogs, transformed), (len + fog.MemberCount, points - fog.TimesUsed));
+            }));
+
+            var results = await Task.WhenAll(newMembers);
+            
+            foreach (var valueTuple in results)
+            {
+                pq.Enqueue(valueTuple.Item1, valueTuple.Item2);
+            }
+
+            if (stopWatch.ElapsedMilliseconds >= 60 * 1000 * 3)
+            {
+                throw new TimeoutException("Search took too long.");
             }
         }
 

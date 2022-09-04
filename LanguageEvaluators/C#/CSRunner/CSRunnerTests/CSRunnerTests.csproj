@@ -45,6 +45,10 @@
       <EmbeddedResource Include="Lambdas\Valid\Code3.txt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </EmbeddedResource>
+      <None Remove="Lambdas\Invalid\Code4.txt" />
+      <EmbeddedResource Include="Lambdas\Invalid\Code4.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

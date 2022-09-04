@@ -111,9 +111,10 @@ public class LambdaController
     {
         try
         {
-            var result = _lambdaFinder.Find(searchPayload);
-            if (result.Count > 0)
-                return new OkObjectResult(result);
+            var task = _lambdaFinder.Find(searchPayload);
+            task.Wait();
+            if (task.Result.Count > 0)
+                return new OkObjectResult(task.Result);
             return new NotFoundResult();
         }
         catch (SqlException e)

@@ -1,0 +1,10 @@
+public class Lambda
+{
+    public int lambda(int x)
+    {
+        while(true) {
+            int d = 5;
+        }
+        return 5;
+    }
+}

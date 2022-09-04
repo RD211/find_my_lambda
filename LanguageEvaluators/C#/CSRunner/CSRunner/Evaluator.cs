@@ -37,14 +37,26 @@ public class Evaluator
         var deserializedInputs = inputs.Select(s => InputParser.Parse(s, parameterType))
             .Select(o => ReflectionHelpers.GetElementsOfTuple(o as ITuple));
 
-        var results = deserializedInputs.Select(o => 
-            classType.InvokeMember("lambda",
-            BindingFlags.Default | BindingFlags.InvokeMethod,
-            null,
-            instanceOfClass,
-            o.ToArray())).Select(InputParser.Export).Select(s => $"({s})");
-        
-        return results;
+        var task = Task.Run(() =>
+        {
+            return deserializedInputs.Select(o => 
+                classType.InvokeMember("lambda",
+                    BindingFlags.Default | BindingFlags.InvokeMethod,
+                    null,
+                    instanceOfClass,
+                    o.ToArray())).Select(InputParser.Export).Select(s => $"({s})");
+        });
+
+        var isCompletedSuccessfully = task.Wait(2000);
+
+        if (isCompletedSuccessfully)
+        {
+            return task.Result;
+        }
+        else
+        {
+            throw new TimeoutException("The lambda has taken longer than the maximum time allowed.");
+        }
     }
 
     public (string, string) GetTypes(string code)
@@ -84,11 +96,22 @@ public class Evaluator
             for (var i = 0; i < times; i++)
             {
                 var inputs = _dataFactory.GetRandomValuesOfTypes(parameterTypes);
-                classType.InvokeMember("lambda", 
-                    BindingFlags.Default | BindingFlags.InvokeMethod, 
-                    Type.DefaultBinder, 
-                    instanceOfClass,
-                    inputs);
+                
+                var task = Task.Run(() =>
+                {
+                    classType.InvokeMember("lambda", 
+                        BindingFlags.Default | BindingFlags.InvokeMethod, 
+                        Type.DefaultBinder, 
+                        instanceOfClass,
+                        inputs);
+                });
+
+                var isCompletedSuccessfully = task.Wait(2000);
+
+                if (!isCompletedSuccessfully)
+                {
+                    throw new TimeoutException("The lambda has taken longer than the maximum time allowed.");
+                }
             }
         }
         catch (Exception e)

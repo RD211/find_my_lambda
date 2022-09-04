@@ -6,9 +6,9 @@ namespace CSRunnerTests;
 
 public class EvaluateTests
 {
-    private readonly string 
-        _code1 = File.ReadAllText("./Lambdas/Valid/Code1.txt"), 
-        _code2 = File.ReadAllText("./Lambdas/Valid/Code2.txt"), 
+    private readonly string
+        _code1 = File.ReadAllText("./Lambdas/Valid/Code1.txt"),
+        _code2 = File.ReadAllText("./Lambdas/Valid/Code2.txt"),
         _code3 = File.ReadAllText("./Lambdas/Valid/Code3.txt");
 
     private readonly Evaluator _evaluator = 
