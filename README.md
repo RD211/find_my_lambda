@@ -55,4 +55,7 @@ dotnet user-secrets set "Database:Password" "<PASS HERE>"
 dotnet user-secrets set "Database:Catalog" "master"
 ```
 
+Download azure data studio
+https://docs.microsoft.com/en-us/sql/azure-data-studio/download-azure-data-studio?view=sql-server-ver16
+
 Run the SqlSetup.ipynb found in the SQL folder of the root directory.
